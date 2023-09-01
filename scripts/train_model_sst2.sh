@@ -42,7 +42,7 @@ declare -a models=(
 for BASE_MODEL in "${models[@]}"
 do
   echo "Training "${BASE_MODEL}...
-  python src/train_model.py \
+  python scripts/python/train_model.py \
     --root_directory=${PROJECTS_DIR}/${project} \
     --base_model=${BASE_MODEL} \
     --dataset=${DATASET} \
