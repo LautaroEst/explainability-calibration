@@ -1,0 +1,219 @@
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at distilroberta-base and are newly initialized: ['classifier.out_proj.bias', 'classifier.dense.weight', 'classifier.out_proj.weight', 'classifier.dense.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/logger_connector/logger_connector.py:67: UserWarning: Starting from v1.9.0, `tensorboardX` has been removed as a dependency of the `lightning.pytorch` package, due to potential conflicts with other packages in the ML ecosystem. For this reason, `logger=True` will use `CSVLogger` as the default logger, unless the `tensorboard` or `tensorboardX` packages are found. Please `pip install lightning[extra]` or one of them to enable TensorBoard support by default
+  warning_cache.warn(
+You are using a CUDA device ('NVIDIA RTX A5000') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/callbacks/model_checkpoint.py:617: UserWarning: Checkpoint directory /mnt/matylda3/qestienne/projects/interpretability/results/sst2/distilroberta-base exists and is not empty.
+  rank_zero_warn(f"Checkpoint directory {dirpath} exists and is not empty.")
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name       | Type                             | Params
+----------------------------------------------------------------
+0 | base_model | RobertaForSequenceClassification | 82.1 M
+----------------------------------------------------------------
+82.1 M    Trainable params
+0         Non-trainable params
+82.1 M    Total params
+328.480   Total estimated model params size (MB)
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:442: PossibleUserWarning: The dataloader, val_dataloader, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 64 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+  rank_zero_warn(
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:442: PossibleUserWarning: The dataloader, train_dataloader, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 64 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+  rank_zero_warn(
+`Trainer.fit` stopped: `max_epochs=3` reached.
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at distilroberta-base and are newly initialized: ['classifier.out_proj.weight', 'classifier.out_proj.bias', 'classifier.dense.weight', 'classifier.dense.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/logger_connector/logger_connector.py:67: UserWarning: Starting from v1.9.0, `tensorboardX` has been removed as a dependency of the `lightning.pytorch` package, due to potential conflicts with other packages in the ML ecosystem. For this reason, `logger=True` will use `CSVLogger` as the default logger, unless the `tensorboard` or `tensorboardX` packages are found. Please `pip install lightning[extra]` or one of them to enable TensorBoard support by default
+  warning_cache.warn(
+You are using a CUDA device ('NVIDIA RTX A5000') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/callbacks/model_checkpoint.py:617: UserWarning: Checkpoint directory /mnt/matylda3/qestienne/projects/interpretability/results/dynasent/distilroberta-base exists and is not empty.
+  rank_zero_warn(f"Checkpoint directory {dirpath} exists and is not empty.")
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [2]
+
+  | Name       | Type                             | Params
+----------------------------------------------------------------
+0 | base_model | RobertaForSequenceClassification | 82.1 M
+----------------------------------------------------------------
+82.1 M    Trainable params
+0         Non-trainable params
+82.1 M    Total params
+328.483   Total estimated model params size (MB)
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:442: PossibleUserWarning: The dataloader, val_dataloader, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 64 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+  rank_zero_warn(
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:442: PossibleUserWarning: The dataloader, train_dataloader, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 64 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+  rank_zero_warn(
+`Trainer.fit` stopped: `max_epochs=3` reached.
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at distilroberta-base and are newly initialized: ['classifier.dense.weight', 'classifier.out_proj.bias', 'classifier.dense.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/logger_connector/logger_connector.py:67: UserWarning: Starting from v1.9.0, `tensorboardX` has been removed as a dependency of the `lightning.pytorch` package, due to potential conflicts with other packages in the ML ecosystem. For this reason, `logger=True` will use `CSVLogger` as the default logger, unless the `tensorboard` or `tensorboardX` packages are found. Please `pip install lightning[extra]` or one of them to enable TensorBoard support by default
+  warning_cache.warn(
+You are using a CUDA device ('NVIDIA RTX A5000') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/callbacks/model_checkpoint.py:617: UserWarning: Checkpoint directory /mnt/matylda3/qestienne/projects/interpretability/results/cose/distilroberta-base exists and is not empty.
+  rank_zero_warn(f"Checkpoint directory {dirpath} exists and is not empty.")
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [2]
+
+  | Name       | Type                             | Params
+----------------------------------------------------------------
+0 | base_model | RobertaForSequenceClassification | 82.1 M
+----------------------------------------------------------------
+82.1 M    Trainable params
+0         Non-trainable params
+82.1 M    Total params
+328.489   Total estimated model params size (MB)
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:442: PossibleUserWarning: The dataloader, val_dataloader, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 64 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+  rank_zero_warn(
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:442: PossibleUserWarning: The dataloader, train_dataloader, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 64 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+  rank_zero_warn(
+`Trainer.fit` stopped: `max_epochs=3` reached.
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at distilroberta-base and are newly initialized: ['classifier.out_proj.bias', 'classifier.dense.weight', 'classifier.dense.bias', 'classifier.out_proj.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/logger_connector/logger_connector.py:67: UserWarning: Starting from v1.9.0, `tensorboardX` has been removed as a dependency of the `lightning.pytorch` package, due to potential conflicts with other packages in the ML ecosystem. For this reason, `logger=True` will use `CSVLogger` as the default logger, unless the `tensorboard` or `tensorboardX` packages are found. Please `pip install lightning[extra]` or one of them to enable TensorBoard support by default
+  warning_cache.warn(
+You are using a CUDA device ('NVIDIA RTX A5000') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/callbacks/model_checkpoint.py:617: UserWarning: Checkpoint directory /mnt/matylda3/qestienne/projects/interpretability/results/cose_simplified/distilroberta-base exists and is not empty.
+  rank_zero_warn(f"Checkpoint directory {dirpath} exists and is not empty.")
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [2]
+
+  | Name       | Type                             | Params
+----------------------------------------------------------------
+0 | base_model | RobertaForSequenceClassification | 82.1 M
+----------------------------------------------------------------
+82.1 M    Trainable params
+0         Non-trainable params
+82.1 M    Total params
+328.480   Total estimated model params size (MB)
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:442: PossibleUserWarning: The dataloader, val_dataloader, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 64 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+  rank_zero_warn(
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:442: PossibleUserWarning: The dataloader, train_dataloader, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 64 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+  rank_zero_warn(
+`Trainer.fit` stopped: `max_epochs=3` reached.
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at distilroberta-base and are newly initialized: ['classifier.out_proj.bias', 'classifier.out_proj.weight', 'classifier.dense.weight', 'classifier.dense.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/logger_connector/logger_connector.py:67: UserWarning: Starting from v1.9.0, `tensorboardX` has been removed as a dependency of the `lightning.pytorch` package, due to potential conflicts with other packages in the ML ecosystem. For this reason, `logger=True` will use `CSVLogger` as the default logger, unless the `tensorboard` or `tensorboardX` packages are found. Please `pip install lightning[extra]` or one of them to enable TensorBoard support by default
+  warning_cache.warn(
+You are using a CUDA device ('NVIDIA RTX A5000') that has Tensor Cores. To properly utilize them, you should set `torch.set_float32_matmul_precision('medium' | 'high')` which will trade-off precision for performance. For more details, read https://pytorch.org/docs/stable/generated/torch.set_float32_matmul_precision.html#torch.set_float32_matmul_precision
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/callbacks/model_checkpoint.py:617: UserWarning: Checkpoint directory /mnt/matylda3/qestienne/projects/interpretability/results/cose/distilroberta-base exists and is not empty.
+  rank_zero_warn(f"Checkpoint directory {dirpath} exists and is not empty.")
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [1]
+
+  | Name       | Type                             | Params
+----------------------------------------------------------------
+0 | base_model | RobertaForSequenceClassification | 82.1 M
+----------------------------------------------------------------
+82.1 M    Trainable params
+0         Non-trainable params
+82.1 M    Total params
+328.480   Total estimated model params size (MB)
+/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/data_connector.py:442: PossibleUserWarning: The dataloader, val_dataloader, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 64 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+  rank_zero_warn(
+../aten/src/ATen/native/cuda/Loss.cu:240: nll_loss_forward_reduce_cuda_kernel_2d: block: [0,0,0], thread: [1,0,0] Assertion `t >= 0 && t < n_classes` failed.
+../aten/src/ATen/native/cuda/Loss.cu:240: nll_loss_forward_reduce_cuda_kernel_2d: block: [0,0,0], thread: [2,0,0] Assertion `t >= 0 && t < n_classes` failed.
+../aten/src/ATen/native/cuda/Loss.cu:240: nll_loss_forward_reduce_cuda_kernel_2d: block: [0,0,0], thread: [4,0,0] Assertion `t >= 0 && t < n_classes` failed.
+../aten/src/ATen/native/cuda/Loss.cu:240: nll_loss_forward_reduce_cuda_kernel_2d: block: [0,0,0], thread: [7,0,0] Assertion `t >= 0 && t < n_classes` failed.
+../aten/src/ATen/native/cuda/Loss.cu:240: nll_loss_forward_reduce_cuda_kernel_2d: block: [0,0,0], thread: [10,0,0] Assertion `t >= 0 && t < n_classes` failed.
+../aten/src/ATen/native/cuda/Loss.cu:240: nll_loss_forward_reduce_cuda_kernel_2d: block: [0,0,0], thread: [12,0,0] Assertion `t >= 0 && t < n_classes` failed.
+../aten/src/ATen/native/cuda/Loss.cu:240: nll_loss_forward_reduce_cuda_kernel_2d: block: [0,0,0], thread: [14,0,0] Assertion `t >= 0 && t < n_classes` failed.
+../aten/src/ATen/native/cuda/Loss.cu:240: nll_loss_forward_reduce_cuda_kernel_2d: block: [0,0,0], thread: [15,0,0] Assertion `t >= 0 && t < n_classes` failed.
+Traceback (most recent call last):
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/call.py", line 43, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/trainer.py", line 571, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/trainer.py", line 980, in _run
+    results = self._run_stage()
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/trainer.py", line 1021, in _run_stage
+    self._run_sanity_check()
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/trainer.py", line 1050, in _run_sanity_check
+    val_loop.run()
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/loops/utilities.py", line 181, in _decorator
+    return loop_run(self, *args, **kwargs)
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/loops/evaluation_loop.py", line 115, in run
+    self._evaluation_step(batch, batch_idx, dataloader_idx)
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/loops/evaluation_loop.py", line 376, in _evaluation_step
+    output = call._call_strategy_hook(trainer, hook_name, *step_kwargs.values())
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/call.py", line 294, in _call_strategy_hook
+    output = fn(*args, **kwargs)
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/strategies/strategy.py", line 393, in validation_step
+    return self.model.validation_step(*args, **kwargs)
+  File "/mnt/matylda3/qestienne/projects/interpretability/interpretability_calibration/modeling/classification.py", line 97, in validation_step
+    self.log("val_loss", loss, batch_size=len(validation_batch))
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/core/module.py", line 493, in log
+    results.log(
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/logger_connector/result.py", line 398, in log
+    self.register_key(key, meta, value)
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/logger_connector/result.py", line 415, in register_key
+    metric = _ResultMetric(meta, isinstance(value, Tensor)).to(self.device)
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/connectors/logger_connector/result.py", line 297, in to
+    self.__dict__.update(apply_to_collection(d, (Tensor, Metric), move_data_to_device, *args, **kwargs))
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning_utilities/core/apply_func.py", line 59, in apply_to_collection
+    v = apply_to_collection(
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning_utilities/core/apply_func.py", line 59, in apply_to_collection
+    v = apply_to_collection(
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning_utilities/core/apply_func.py", line 51, in apply_to_collection
+    return function(data, *args, **kwargs)
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/fabric/utilities/apply_func.py", line 101, in move_data_to_device
+    return apply_to_collection(batch, dtype=_TransferableDataType, function=batch_to)
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning_utilities/core/apply_func.py", line 51, in apply_to_collection
+    return function(data, *args, **kwargs)
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/fabric/utilities/apply_func.py", line 95, in batch_to
+    data_output = data.to(device, **kwargs)
+RuntimeError: CUDA error: device-side assert triggered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/matylda3/qestienne/projects/interpretability/scripts/python/train_model.py", line 104, in <module>
+    main()    
+  File "/mnt/matylda3/qestienne/projects/interpretability/scripts/python/train_model.py", line 100, in main
+    trainer.fit(model, train_loader, validation_loader)
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/trainer.py", line 532, in fit
+    call._call_and_handle_interrupt(
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/call.py", line 67, in _call_and_handle_interrupt
+    trainer._teardown()
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/trainer/trainer.py", line 1003, in _teardown
+    self.strategy.teardown()
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/pytorch/strategies/strategy.py", line 498, in teardown
+    self.lightning_module.cpu()
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/lightning/fabric/utilities/device_dtype_mixin.py", line 79, in cpu
+    return super().cpu()
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/torch/nn/modules/module.py", line 954, in cpu
+    return self._apply(lambda t: t.cpu())
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/torch/nn/modules/module.py", line 797, in _apply
+    module._apply(fn)
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/torch/nn/modules/module.py", line 797, in _apply
+    module._apply(fn)
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/torch/nn/modules/module.py", line 797, in _apply
+    module._apply(fn)
+  [Previous line repeated 1 more time]
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/torch/nn/modules/module.py", line 820, in _apply
+    param_applied = fn(param)
+  File "/mnt/matylda3/qestienne/anaconda3/envs/fair/lib/python3.9/site-packages/torch/nn/modules/module.py", line 954, in <lambda>
+    return self._apply(lambda t: t.cpu())
+RuntimeError: CUDA error: device-side assert triggered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
