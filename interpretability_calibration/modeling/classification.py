@@ -80,10 +80,13 @@ class SequenceClassificationModel(pl.LightningModule):
         else:
             labels = train_batch["label"]
             loss = F.cross_entropy(output["logits"],labels)
-        self.log("train_loss", loss, batch_size=len(train_batch))
 
         acc = accuracy(output["logits"],labels)
-        self.log("train_acc", acc, on_epoch=True, batch_size=len(train_batch))
+        self.log_dict({
+            "global_step": self.global_step,
+            "train_loss": loss,
+            "train_acc": acc
+        }, batch_size=len(train_batch))
         return loss
     
     def validation_step(self, validation_batch, batch_idx):
@@ -94,10 +97,11 @@ class SequenceClassificationModel(pl.LightningModule):
         else:
             labels = validation_batch["label"]
             loss = F.cross_entropy(output["logits"],labels)
-        self.log("val_loss", loss, batch_size=len(validation_batch))
-        
         acc = accuracy(output["logits"],labels)
-        self.log("val_acc", acc, on_epoch=True, batch_size=len(validation_batch))
+        self.log_dict({
+            "val_loss": loss,
+            "val_acc": acc
+        }, batch_size=len(validation_batch))
         return loss
     
     def backward(self, loss):

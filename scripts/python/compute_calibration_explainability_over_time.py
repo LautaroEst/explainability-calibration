@@ -17,8 +17,7 @@ def parse_args():
     parser.add_argument("--base_model", type=str, required=True, help="Tranformers model name")
     parser.add_argument("--dataset", type=ic.data.SupportedDatasets, required=True, choices=list(ic.data.SupportedDatasets))
     parser.add_argument("--n_labels", type=int, default=2, help="Number of classes")
-    parser.add_argument("--store_model_with_best", type=str, default=None, help="It should be set to the name of an evaluation metric.\nIf set the checkpoint with the best such evaluation\nmetric will be in the 'best' folder.")
-    parser.add_argument("--eval_every_epoch", type=int, default=1, help="Evaluation interval in training epochs.")
+    parser.add_argument("--eval_every_n_train_steps", type=int, default=None, help="Number of train steps every which the model should be checkpointed.")
     parser.add_argument("--num_epochs", type=int, default=5, help="Number of epochs.")
     parser.add_argument("--learning_rate", type=float, default=3e-2, help="Learning rate")
     parser.add_argument("--batch_size", type=int, default=8, help="Train and evaluation batch size.")
@@ -90,7 +89,12 @@ def main():
     )
 
     # Init trainer:
-    trainer = ic.training.init_trainer(results_dir, args.store_model_with_best, args.num_epochs, args.max_gradient_norm)
+    trainer = ic.training.init_trainer_with_callbacks(
+        results_dir, 
+        args.eval_every_n_train_steps, 
+        args.num_epochs, 
+        args.max_gradient_norm
+    )
 
     # Train, validate and save checkpoints:
     print("***** Running training *****")

@@ -38,26 +38,25 @@ declare -a models=(
 # "microsoft/deberta-v3-large"
 )
 
-# DATASET="sst2"
-# for BASE_MODEL in "${models[@]}"
-# do
-#   echo "Training "${BASE_MODEL} on ${DATASET} dataset...
-#   mkdir -p ${PROJECTS_DIR}/${project}/results/${DATASET}/${BASE_MODEL}
-#   python scripts/python/train_model.py \
-#     --root_directory=${PROJECTS_DIR}/${project} \
-#     --base_model=${BASE_MODEL} \
-#     --dataset=$DATASET \
-#     --n_labels=2 \
-#     --store_model_with_best="val_acc" \
-#     --eval_every_epoch=1 \
-#     --batch_size=32 \
-#     --num_epochs=3 \
-#     --learning_rate=0.00002 \
-#     --weight_decay=0.01 \
-#     --warmup_proportion 0.1 \
-#     --max_gradient_norm 10.0 \
-#     --seed $SEED
-# done
+DATASET="sst2"
+for BASE_MODEL in "${models[@]}"
+do
+  echo "Training "${BASE_MODEL} on ${DATASET} dataset...
+  mkdir -p ${PROJECTS_DIR}/${project}/results/${DATASET}/${BASE_MODEL}
+  python scripts/python/train_model.py \
+    --root_directory=${PROJECTS_DIR}/${project} \
+    --base_model=${BASE_MODEL} \
+    --dataset=$DATASET \
+    --n_labels=2 \
+    --eval_every_n_train_steps=500 \
+    --batch_size=32 \
+    --num_epochs=3 \
+    --learning_rate=0.00002 \
+    --weight_decay=0.01 \
+    --warmup_proportion 0.1 \
+    --max_gradient_norm 10.0 \
+    --seed $SEED
+done
 
 # DATASET="dynasent"
 # for BASE_MODEL in "${models[@]}"
@@ -69,8 +68,7 @@ declare -a models=(
 #     --base_model=${BASE_MODEL} \
 #     --dataset=$DATASET \
 #     --n_labels=3 \
-#     --store_model_with_best="val_acc" \
-#     --eval_every_epoch=1 \
+#     --eval_every_n_train_steps=200 \
 #     --batch_size=32 \
 #     --num_epochs=3 \
 #     --learning_rate=0.00002 \
@@ -80,46 +78,44 @@ declare -a models=(
 #     --seed $SEED
 # done
 
-DATASET="cose"
-for BASE_MODEL in "${models[@]}"
-do
-  echo "Training "${BASE_MODEL} on ${DATASET} dataset...
-  mkdir -p ${PROJECTS_DIR}/${project}/results/${DATASET}/${BASE_MODEL}
-  python scripts/python/train_model.py \
-    --root_directory=${PROJECTS_DIR}/${project} \
-    --base_model=${BASE_MODEL} \
-    --dataset=$DATASET \
-    --n_labels=5 \
-    --store_model_with_best="val_acc" \
-    --eval_every_epoch=1 \
-    --batch_size=16 \
-    --num_epochs=3 \
-    --learning_rate=0.00001 \
-    --weight_decay=0.01 \
-    --warmup_proportion 0.0 \
-    --max_gradient_norm 10.0 \
-    --seed $SEED
-done
+# DATASET="cose"
+# for BASE_MODEL in "${models[@]}"
+# do
+#   echo "Training "${BASE_MODEL} on ${DATASET} dataset...
+#   mkdir -p ${PROJECTS_DIR}/${project}/results/${DATASET}/${BASE_MODEL}
+#   python scripts/python/train_model.py \
+#     --root_directory=${PROJECTS_DIR}/${project} \
+#     --base_model=${BASE_MODEL} \
+#     --dataset=$DATASET \
+#     --n_labels=5 \
+#     --eval_every_n_train_steps=150 \
+#     --batch_size=16 \
+#     --num_epochs=3 \
+#     --learning_rate=0.00001 \
+#     --weight_decay=0.01 \
+#     --warmup_proportion 0.0 \
+#     --max_gradient_norm 10.0 \
+#     --seed $SEED
+# done
 
-DATASET="cose_simplified"
-for BASE_MODEL in "${models[@]}"
-do
-  echo "Training "${BASE_MODEL} on ${DATASET} dataset...
-  mkdir -p ${PROJECTS_DIR}/${project}/results/${DATASET}/${BASE_MODEL}
-  python scripts/python/train_model.py \
-    --root_directory=${PROJECTS_DIR}/${project} \
-    --base_model=${BASE_MODEL} \
-    --dataset=$DATASET \
-    --n_labels=2 \
-    --store_model_with_best="val_acc" \
-    --eval_every_epoch=1 \
-    --batch_size=16 \
-    --num_epochs=3 \
-    --learning_rate=0.00001 \
-    --weight_decay=0.01 \
-    --warmup_proportion 0.0 \
-    --max_gradient_norm 10.0 \
-    --seed $SEED
-done
+# DATASET="cose_simplified"
+# for BASE_MODEL in "${models[@]}"
+# do
+#   echo "Training "${BASE_MODEL} on ${DATASET} dataset...
+#   mkdir -p ${PROJECTS_DIR}/${project}/results/${DATASET}/${BASE_MODEL}
+#   python scripts/python/train_model.py \
+#     --root_directory=${PROJECTS_DIR}/${project} \
+#     --base_model=${BASE_MODEL} \
+#     --dataset=$DATASET \
+#     --n_labels=2 \
+#     --eval_every_n_train_steps=150 \
+#     --batch_size=16 \
+#     --num_epochs=3 \
+#     --learning_rate=0.00001 \
+#     --weight_decay=0.01 \
+#     --warmup_proportion 0.0 \
+#     --max_gradient_norm 10.0 \
+#     --seed $SEED
+# done
 
 conda deactivate
