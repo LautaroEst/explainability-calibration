@@ -143,14 +143,6 @@ class DYNASENTDataDict(DataDict):
 
 class COSEDataDict(DataDict):
 
-    one_hot_map = {
-        "A": [1, 0, 0, 0, 0],
-        "B": [0, 1, 0, 0, 0],
-        "C": [0, 0, 1, 0, 0],
-        "D": [0, 0, 0, 1, 0],
-        "E": [0, 0, 0, 0, 1],
-    }
-
     def __init__(self, root_directory, mode="original", simplified=False):
         """
             :param root_directory: Root directory of the project.
@@ -237,7 +229,7 @@ class COSEDataDict(DataDict):
                 *[
                     (
                         [data[i]["question"], data[i]["evidence"]] + data[i]["query"],
-                        self.one_hot_map[data[i]["label"]],
+                        self._label2int([data[i]["label"]],self.simplified)[0],
                     )
                     for i in ids_queries
                 ]

@@ -78,10 +78,11 @@ class SequenceClassificationModel(pl.LightningModule):
             labels = train_batch["label"].unsqueeze(dim=-1).type(output["logits"].dtype)
             loss = F.binary_cross_entropy_with_logits(output["logits"],labels)
         else:
-            loss = F.cross_entropy(output["logits"],train_batch["label"])
+            labels = train_batch["label"]
+            loss = F.cross_entropy(output["logits"],labels)
         self.log("train_loss", loss, batch_size=len(train_batch))
 
-        acc = accuracy(output["logits"],train_batch["label"])
+        acc = accuracy(output["logits"],labels)
         self.log("train_acc", acc, on_epoch=True, batch_size=len(train_batch))
         return loss
     
@@ -91,10 +92,11 @@ class SequenceClassificationModel(pl.LightningModule):
             labels = validation_batch["label"].unsqueeze(dim=-1).type(output["logits"].dtype)
             loss = F.binary_cross_entropy_with_logits(output["logits"],labels)
         else:
-            loss = F.cross_entropy(output["logits"],validation_batch["label"])
+            labels = validation_batch["label"]
+            loss = F.cross_entropy(output["logits"],labels)
         self.log("val_loss", loss, batch_size=len(validation_batch))
         
-        acc = accuracy(output["logits"],validation_batch["label"])
+        acc = accuracy(output["logits"],labels)
         self.log("val_acc", acc, on_epoch=True, batch_size=len(validation_batch))
         return loss
     
