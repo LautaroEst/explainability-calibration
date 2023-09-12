@@ -1,60 +1,41 @@
-from enum import Enum
-from torch.utils.data import Dataset, DataLoader
-from datasets import load_from_disk
-import os
+import torch
+from torch.utils.data import DataLoader, RandomSampler
 
-class SupportedDatasets(str, Enum):
-    SST2 = "sst2"
-    DYNASENT = "dynasent"
-    COSE = "cose"
-    COSE_SIMPLIFIED = "cose_simplified"
-
-    def __str__(self):
-        return self.value
-
-
-def load_dataset(dataset_name, root_directory):
-    if dataset_name == SupportedDatasets.SST2:
-        return SST2Dataset(root_directory)
-    elif dataset_name == SupportedDatasets.DYNASENT:
-        return DYNASENTDataset()
-    elif dataset_name == SupportedDatasets.COSE:
-        return COSEDataset(simplified=False)
-    elif dataset_name == SupportedDatasets.COSE_SIMPLIFIED:
-        return COSEDataset(simplified=True)
     
-
-class SST2Dataset(Dataset):
-    def __init__(self, root_directory):
-        self._data = load_from_disk(os.path.join(root_directory,"data/sst2"))
-
-class DYNASENTDataset(Dataset):
-    pass
-
-class COSEDataset(Dataset):
-    pass
-
-
 class DynamicPaddingCollator:
     def __init__(self, tokenizer):
         self.tokenizer = tokenizer
 
-    def __call__(self, sentences_batch):
-        return self.tokenizer(
-            sentences_batch,
+    def __call__(self, batch):
+        batch = {k: [sample[k] for sample in batch] for k in batch[0]}
+        tokenizer_output = self.tokenizer(
+            batch["sentence"],
             padding=True,
             return_tensors="pt",
-            truncate=True,
-            max_seq_len=self.tokenizer.max_seq_len
+            truncation="longest_first",
+            return_token_type_ids=True,
+            return_attention_mask=True
         )
+        batch.update(tokenizer_output)
+        batch["label"] = torch.tensor(batch["label"],dtype=torch.long)
+        return batch
 
 
 class LoaderWithDynamicPadding(DataLoader):
-    def __init__(self,tokenizer,*args,**kwargs):
+    def __init__(self, dataset, tokenizer, batch_size, shuffle=True, random_state=None):
+        if shuffle:
+            generator = torch.Generator()
+            if random_state is not None:
+                generator.manual_seed(random_state)
+            sampler = RandomSampler(
+                dataset, replacement=False, generator=generator
+            )
+        else:
+            sampler = None
         super().__init__(
-            *args,
-            collate_fn=DynamicPaddingCollator(
-                tokenizer=tokenizer
-            ),
-            **kwargs
+            dataset=dataset,
+            collate_fn=DynamicPaddingCollator(tokenizer=tokenizer),
+            batch_size=batch_size,
+            shuffle=False,
+            sampler=sampler,
         )
