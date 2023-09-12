@@ -22,10 +22,10 @@ DATASET="sst2"
 declare -a models=(
 # "albert-base-v2"
 # "albert-large-v2"
-"nreimers/MiniLM-L6-H384-uncased"
+# "nreimers/MiniLM-L6-H384-uncased"
 # "microsoft/MiniLM-L12-H384-uncased"
 # "albert-xlarge-v2"
-"distilbert-base-uncased"
+# "distilbert-base-uncased"
 "distilroberta-base"
 # "bert-base-uncased"
 # "roberta-base"
@@ -42,16 +42,18 @@ declare -a models=(
 for BASE_MODEL in "${models[@]}"
 do
   echo "Training "${BASE_MODEL}...
+  mkdir -p ${PROJECTS_DIR}/${project}/results/${DATASET}/${BASE_MODEL}
   python scripts/python/train_model.py \
     --root_directory=${PROJECTS_DIR}/${project} \
     --base_model=${BASE_MODEL} \
     --dataset=${DATASET} \
-    --n_labels=2 \
+    --n_labels=1 \
     --store_model_with_best="val_acc" \
     --eval_every_epoch=1 \
-    --batch_size=32 \
+    --batch_size=16 \
     --num_epochs=3 \
     --learning_rate=0.00002 \
+    --weight_decay=0.01 \
     --warmup_proportion 0.1
 done
 
