@@ -1,6 +1,5 @@
-logs/
-results/
+./logs/
+./results/
 *.egg-info/
 *.pyc
 *__pycache__/
-data/

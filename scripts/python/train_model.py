@@ -90,7 +90,7 @@ def main():
     )
 
     # Init trainer:
-    trainer = ic.modeling.init_trainer(results_dir, args.store_model_with_best, args.num_epochs, args.max_gradient_norm)
+    trainer = ic.training.init_trainer(results_dir, args.store_model_with_best, args.num_epochs, args.max_gradient_norm)
 
     # Train, validate and save checkpoints:
     print("***** Running training *****")

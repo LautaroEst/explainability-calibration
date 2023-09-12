@@ -8,8 +8,13 @@ class DynamicPaddingCollator:
 
     def __call__(self, batch):
         batch = {k: [sample[k] for sample in batch] for k in batch[0]}
+        if isinstance(batch["sentence"][0],list):
+            sentences = [self.tokenizer.sep_token.join(s) for s in batch["sentence"]]
+        else:
+            sentences = batch["sentence"]
         tokenizer_output = self.tokenizer(
-            batch["sentence"],
+            sentences,
+            add_special_tokens=True,
             padding=True,
             return_tensors="pt",
             truncation="longest_first",

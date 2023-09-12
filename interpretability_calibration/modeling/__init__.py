@@ -1,1 +1,1 @@
-from . import SequenceClassificationModel
+from .classification import SequenceClassificationModel
