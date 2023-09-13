@@ -73,15 +73,15 @@ class SequenceClassificationModel(pl.LightningModule):
         }
 
     def training_step(self, train_batch, batch_idx):
-        output = self(train_batch)
+        outputs = self(train_batch)
         if self.num_labels == 1:
-            labels = train_batch["label"].unsqueeze(dim=-1).type(output["logits"].dtype)
-            loss = F.binary_cross_entropy_with_logits(output["logits"],labels)
+            labels = train_batch["label"].unsqueeze(dim=-1).type(outputs["logits"].dtype)
+            loss = F.binary_cross_entropy_with_logits(outputs["logits"],labels)
         else:
             labels = train_batch["label"]
-            loss = F.cross_entropy(output["logits"],labels)
+            loss = F.cross_entropy(outputs["logits"],labels)
 
-        acc = accuracy(output["logits"],labels)
+        acc = accuracy(outputs["logits"],labels)
         self.log_dict({
             "global_step": self.global_step,
             "train_loss": loss,
@@ -90,19 +90,19 @@ class SequenceClassificationModel(pl.LightningModule):
         return loss
     
     def validation_step(self, validation_batch, batch_idx):
-        output = self(validation_batch)
+        outputs = self(validation_batch)
         if self.num_labels == 1:
-            labels = validation_batch["label"].unsqueeze(dim=-1).type(output["logits"].dtype)
-            loss = F.binary_cross_entropy_with_logits(output["logits"],labels)
+            labels = validation_batch["label"].unsqueeze(dim=-1).type(outputs["logits"].dtype)
+            loss = F.binary_cross_entropy_with_logits(outputs["logits"],labels)
         else:
             labels = validation_batch["label"]
-            loss = F.cross_entropy(output["logits"],labels)
-        acc = accuracy(output["logits"],labels)
+            loss = F.cross_entropy(outputs["logits"],labels)
+        acc = accuracy(outputs["logits"],labels)
         self.log_dict({
             "val_loss": loss,
             "val_acc": acc
-        }, batch_size=len(validation_batch))
-        return loss
+        }, batch_size=len(validation_batch), on_epoch=True)
+        return outputs
     
     def backward(self, loss):
         loss.backward()

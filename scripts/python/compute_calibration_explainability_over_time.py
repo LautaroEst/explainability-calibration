@@ -1,6 +1,6 @@
 
 import argparse
-import explainability_calibration as ic
+import explainability_calibration as ec
 import numpy as np
 import os
 from transformers import AutoTokenizer
@@ -15,7 +15,7 @@ def parse_args():
     )
     parser.add_argument("--root_directory", type=str, required=True, help="Root directory of the proyect.")
     parser.add_argument("--base_model", type=str, required=True, help="Tranformers model name")
-    parser.add_argument("--dataset", type=ic.data.SupportedDatasets, required=True, choices=list(ic.data.SupportedDatasets))
+    parser.add_argument("--dataset", type=ec.data.SupportedDatasets, required=True, choices=list(ec.data.SupportedDatasets))
     parser.add_argument("--n_labels", type=int, default=2, help="Number of classes")
     parser.add_argument("--eval_every_n_train_steps", type=int, default=None, help="Number of train steps every which the model should be checkpointed.")
     parser.add_argument("--num_epochs", type=int, default=5, help="Number of epochs.")
@@ -45,7 +45,7 @@ def main():
 
     # Load the data in train_on_non_annotated mode:
     print(f"Loading {args.dataset} dataset...")
-    datadict = ic.data.load_dataset(
+    datadict = ec.data.load_dataset(
         args.dataset,
         args.root_directory,
         mode="train_on_non_annotated"
@@ -61,14 +61,14 @@ def main():
 
     # Create the train and validation dataloaders:
     print(f"Creating dataloaders...")
-    train_loader = ic.data.LoaderWithDynamicPadding(
+    train_loader = ec.data.LoaderWithDynamicPadding(
         dataset=datadict["train"],
         tokenizer=tokenizer,
         batch_size=args.batch_size,
         shuffle=True,
         random_state=rs.randint(0,MAX_INT_GENERATOR)
     )
-    validation_loader = ic.data.LoaderWithDynamicPadding(
+    validation_loader = ec.data.LoaderWithDynamicPadding(
         dataset=datadict["validation"],
         tokenizer=tokenizer,
         batch_size=args.batch_size,
@@ -79,7 +79,7 @@ def main():
     # Load the pre-trained model to perform Sequence Classification:
     print(f"Loading {args.base_model} pre-trained model...")
     num_train_optimization_steps = int(len(train_loader) / args.batch_size) * args.num_epochs
-    model = ic.modeling.SequenceClassificationModel(
+    model = ec.modeling.SequenceClassificationModel(
         base_model=args.base_model,
         num_labels=args.n_labels,
         learning_rate=args.learning_rate,
@@ -89,7 +89,7 @@ def main():
     )
 
     # Init trainer:
-    trainer = ic.training.init_trainer_with_callbacks(
+    trainer = ec.training.init_trainer_with_callbacks(
         results_dir, 
         args.eval_every_n_train_steps, 
         args.num_epochs, 

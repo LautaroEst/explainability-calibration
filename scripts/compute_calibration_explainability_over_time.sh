@@ -8,7 +8,7 @@
 #$ -l matylda3=0.5,gpu=1,gpu_ram=16G,ram_free=64G,mem_free=10G
 #
 
-project="interpretability"
+project="explainability"
 env_name="fair"
 
 source ~/.bashrc
@@ -43,7 +43,7 @@ for BASE_MODEL in "${models[@]}"
 do
   echo "Training "${BASE_MODEL} on ${DATASET} dataset...
   mkdir -p ${PROJECTS_DIR}/${project}/results/${DATASET}/${BASE_MODEL}
-  python scripts/python/train_model.py \
+  python scripts/python/compute_calibration_explainability_over_time.py \
     --root_directory=${PROJECTS_DIR}/${project} \
     --base_model=${BASE_MODEL} \
     --dataset=$DATASET \
@@ -63,7 +63,7 @@ done
 # do
 #   echo "Training "${BASE_MODEL} on ${DATASET} dataset...
 #   mkdir -p ${PROJECTS_DIR}/${project}/results/${DATASET}/${BASE_MODEL}
-#   python scripts/python/train_model.py \
+#   python scripts/python/compute_calibration_explainability_over_time.py \
 #     --root_directory=${PROJECTS_DIR}/${project} \
 #     --base_model=${BASE_MODEL} \
 #     --dataset=$DATASET \
@@ -83,7 +83,7 @@ done
 # do
 #   echo "Training "${BASE_MODEL} on ${DATASET} dataset...
 #   mkdir -p ${PROJECTS_DIR}/${project}/results/${DATASET}/${BASE_MODEL}
-#   python scripts/python/train_model.py \
+#   python scripts/python/compute_calibration_explainability_over_time.py \
 #     --root_directory=${PROJECTS_DIR}/${project} \
 #     --base_model=${BASE_MODEL} \
 #     --dataset=$DATASET \
@@ -103,7 +103,7 @@ done
 # do
 #   echo "Training "${BASE_MODEL} on ${DATASET} dataset...
 #   mkdir -p ${PROJECTS_DIR}/${project}/results/${DATASET}/${BASE_MODEL}
-#   python scripts/python/train_model.py \
+#   python scripts/python/compute_calibration_explainability_over_time.py \
 #     --root_directory=${PROJECTS_DIR}/${project} \
 #     --base_model=${BASE_MODEL} \
 #     --dataset=$DATASET \
