@@ -1,6 +1,6 @@
 
 import argparse
-import interpretability_calibration as ic
+import explainability_calibration as ic
 import numpy as np
 import os
 from transformers import AutoTokenizer

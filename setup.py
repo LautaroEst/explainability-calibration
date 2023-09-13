@@ -8,13 +8,13 @@ def read(fname):
     
 
 setup(
-    name = "interpretability_calibration",
+    name = "explainability_calibration",
     version = "0.0.1",
     author = "Lautaro Estienne",
     author_email = "lestienne@fi.uba.ar",
     description = ("Code to work on the interpretabiliy of the model and its calibration"),
-    keywords = "interpretability calibration",
-    url = "https://github.com/LautaroEst/interpretability-calibration",
-    packages=['interpretability_calibration'],
+    keywords = "explainability calibration",
+    url = "https://github.com/LautaroEst/explainability-calibration",
+    packages=['explainability_calibration'],
     long_description=read('Readme.md')
 )
