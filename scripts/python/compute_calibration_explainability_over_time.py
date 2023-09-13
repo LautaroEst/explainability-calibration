@@ -93,7 +93,8 @@ def main():
         results_dir, 
         args.eval_every_n_train_steps, 
         args.num_epochs, 
-        args.max_gradient_norm
+        args.max_gradient_norm,
+        rs.randint(0,MAX_INT_GENERATOR)
     )
 
     # Train, validate and save checkpoints:
