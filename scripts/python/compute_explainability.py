@@ -68,8 +68,8 @@ def main():
         shuffle=True,
         random_state=rs.randint(0,MAX_INT_GENERATOR)
     )
-    validation_loader = ec.data.LoaderWithDynamicPadding(
-        dataset=datadict["validation"],
+    test_loader = ec.data.LoaderWithDynamicPadding(
+        dataset=datadict["test"],
         tokenizer=tokenizer,
         batch_size=args.batch_size,
         shuffle=False,
@@ -89,7 +89,7 @@ def main():
     )
 
     # Init trainer:
-    trainer = ec.training.init_trainer_with_callbacks(
+    trainer = ec.training.init_trainer_for_model_selection(
         results_dir, 
         args.eval_every_n_train_steps, 
         args.num_epochs, 
@@ -102,7 +102,7 @@ def main():
     print("  Num examples = %d", len(datadict['train']))
     print("  Batch size = %d", args.batch_size)
     print("  Num steps = %d", len(train_loader)*args.num_epochs)
-    trainer.fit(model, train_loader, validation_loader)
+    trainer.fit(model, train_loader, test_loader)
 
 
 if __name__ == "__main__":

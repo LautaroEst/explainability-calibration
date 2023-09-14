@@ -84,27 +84,27 @@ class EvaluatePSRCalibrationCallback(Callback):
     ):
         super().__init__()
 
-        if self.psr == "log-loss":
+        if psr == "log-loss":
             loss_fn = LogLoss(norm=False)
-        elif self.psr == "normalized log-loss":
+        elif psr == "normalized log-loss":
             loss_fn = LogLoss(norm=True)
-        if self.psr == "brier":
+        elif psr == "brier":
             loss_fn = Brier(norm=False)
-        elif self.psr == "normalized brier":
+        elif psr == "normalized brier":
             loss_fn = Brier(norm=True)
         else:
             raise ValueError(f"PSR {psr} not supported")
 
-        if self.model == "matrix scaling":
+        if model == "matrix scaling":
             scale = "matrix"
             bias = True
-        elif self.model == "vector scaling":
+        elif model == "vector scaling":
             scale = "vector"
             bias = True
-        elif self.model == "temperature scaling":
+        elif model == "temperature scaling":
             scale = "scalar"
             bias = False
-        elif self.model == "bias only":
+        elif model == "bias only":
             scale = "none"
             bias = True
         else:

@@ -62,38 +62,42 @@ class SST2DataDict(DataDict):
             :param root_directory: Root directory of the project.
             :param mode: Mode on which the data will be loaded:
                 - "original": samples of the original train, dev and test splits. 
-                - "annotated_rationales": samples of the annotated fair data that belongs to the train, dev an test splits. 
-                - "non_annotated_rationales": original splits excluding the annotated samples for the fair dataset.
-                - "train_on_non_annotated": original but the train split excludes the annotated samples.
+                - "trainon_nonannot_valon_nonannot_teston_annot": Train on the original train set excluding the annotated samples of this set, validate on the original validation set excluding the annotated samples of this set and test on the annotated samples.
         """
         self.root_directory = root_directory
         self.mode = mode
         _data = load_from_disk(os.path.join(root_directory,"data/sst2"))
         dfs = {}
-        for _split in ["train", "test", "validation"]:
-            _data_split = _data[_split].to_pandas()
-            annotations_path = os.path.join(root_directory, "data/fair-data/data/SST", f"sst2_{_split}set_indexes.csv")
-            if mode == "original":
-                _data_split = _data_split.reset_index(drop=True)
-            elif mode == "annotated_rationales":
+        if mode == "original":
+            for _split in ["train", "validation", "test"]:
+                _data_split = _data[_split].to_pandas().reset_index(drop=True)
+                _data_split.rename(columns={"idx": "sentence_id"},inplace=True)
+                dfs[_split] = BaseDataset(_data_split)
+        elif mode == "trainon_nonannot_valon_nonannot_teston_annot":
+            for _split in ["train", "validation"]:
+                annotations_path = os.path.join(root_directory, f"data/fair-data/data/SST/sst2_{_split}set_indexes.csv")
                 idxs_from_annotations = pd.read_csv(annotations_path)["sst2_idxs"]
-                _data_split = _data_split[_data_split.idx.isin(idxs_from_annotations)].reset_index(drop=True)
-            elif mode == "non_annotated_rationales":
-                idxs_from_annotations = pd.read_csv(annotations_path)["sst2_idxs"]
+                _data_split = _data[_split].to_pandas()
                 _data_split = _data_split[~_data_split.idx.isin(idxs_from_annotations)].reset_index(drop=True)
-            elif mode == "train_on_non_annotated":
-                if _split == "train":
-                    idxs_from_annotations = pd.read_csv(annotations_path)["sst2_idxs"]
-                    _data_split = _data_split[~_data_split.idx.isin(idxs_from_annotations)].reset_index(drop=True)
-                else:
-                    _data_split = _data_split.reset_index(drop=True)
-            else:
-                raise ValueError(f"Dataset sst2 not supported on mode {mode}.")
-            if _split == "test":
-                _data_split["label"] = -1
-            _data_split.rename(columns={"idx": "sentence_id"},inplace=True)
-            dfs[_split] = BaseDataset(_data_split)
+                _data_split.rename(columns={"idx": "sentence_id"},inplace=True)
+                dfs[_split] = BaseDataset(_data_split)
+            test_dfs = []
+            for _split in ["train", "validation", "test"]:
+                annotations_path = os.path.join(root_directory, f"data/fair-data/data/SST/sst2_{_split}set_indexes.csv")
+                idxs_from_annotations = pd.read_csv(annotations_path)["sst2_idxs"]
+                _data_split = _data[_split].to_pandas()
+                _data_split = _data_split[_data_split.idx.isin(idxs_from_annotations)].reset_index(drop=True)
+                test_dfs.append(_data_split)
+            test_dfs = pd.concat(test_dfs,axis=0).reset_index(drop=True)
+            test_dfs.rename(columns={"idx": "sentence_id"},inplace=True)
+            dfs[_split] = BaseDataset(test_dfs)
+        else:
+            raise ValueError(f"Dataset sst2 not supported on mode {mode}.")
         super().__init__(dfs)
+
+    @property
+    def num_labels(self):
+        return 2
 
 
 class DYNASENTDataDict(DataDict):
@@ -105,27 +109,33 @@ class DYNASENTDataDict(DataDict):
             :param root_directory: Root directory of the project.
             :param mode: Mode on which the data will be loaded:
                 - "original": samples of the original train, dev and test splits. 
-                - "annotated_rationales": samples of the annotated fair data that belongs to the train, dev an test splits. 
-                - "non_annotated_rationales": original splits excluding the annotated samples for the fair dataset.
-                - "train_on_non_annotated": original but the train split excludes the annotated samples.
+                - "trainon_nonannot_valon_nonannot_teston_annot": Train on the original train set excluding the annotated samples of this set, validate on the original validation set excluding the annotated samples of this set and test on the annotated samples.
         """
         self.root_directory = root_directory
         self.mode = mode
 
         _data = {}
-        for _split in ["train", "test", "validation"]:
-            _data_split = self._read_split(_split)
-            if mode in ["original", "train_on_non_annotated"]:
+        if mode == "original":
+            for _split in ["train", "validation", "test"]:
+                _data_split = self._read_split(_split)
                 _data[_split] = BaseDataset(_data_split)
-            elif mode == "annotated_rationales":   
-                _data[_split] = BaseDataset(_data_split) if _split == "test" else BaseDataset(pd.DataFrame({"sentence": [], "label": [], "sentence_id": []}))
-            elif mode == "non_annotated_rationales":
-                _data[_split] = BaseDataset(_data_split) if _split != "test" else BaseDataset(pd.DataFrame({"sentence": [], "label": [], "sentence_id": []}))
-            else:
+        elif mode == "trainon_nonannot_valon_nonannot_teston_annot":
+            for _split in ["train", "validation"]:
+                _data_split = self._read_split(_split)
+                _data[_split] = BaseDataset(_data_split)
+            df = pd.read_csv(os.path.join(root_directory,"data/fair-data/data/dynasent/BO_processed.csv"))
+            sentences_id_str = list(set(df["originaldata_id"]))
+            _data_split = self._read_split("test",exclude=sentences_id_str)
+            _data["test"] = BaseDataset(_data_split)
+        else:
                 raise ValueError(f"Dataset dynasent not supported on mode {mode}.")
         super().__init__(_data)
 
-    def _read_split(self, split):
+    @property
+    def num_labels(self):
+        return len(self.label2integer)
+
+    def _read_split(self, split, exclude=None):
         if split == "validation":
             split = "dev"
         sentences = []
@@ -134,7 +144,8 @@ class DYNASENTDataDict(DataDict):
         with open(os.path.join(self.root_directory,f"data/dynasent-v1.1/dynasent-v1.1-round02-dynabench-{split}.jsonl")) as f:
             for line in f:
                 d = json.loads(line)
-                if d["gold_label"] in self.label2integer.keys():
+                if (exclude is None and d["gold_label"] in self.label2integer.keys()) \
+                or (exclude is not None and d["gold_label"] not in exclude and d["gold_label"] in self.label2integer.keys()):
                     sentences.append(d["sentence"])
                     labels.append(self.label2integer[d["gold_label"]])
                     sentences_ids.append(int(d["text_id"][len("r2-") :]))
@@ -148,9 +159,7 @@ class COSEDataDict(DataDict):
             :param root_directory: Root directory of the project.
             :param mode: Mode on which the data will be loaded:
                 - "original": samples of the original train, dev and test splits. 
-                - "annotated_rationales": samples of the annotated fair data that belongs to the train, dev an test splits. 
-                - "non_annotated_rationales": original splits excluding the annotated samples for the fair dataset.
-                - "train_on_non_annotated": original but the train split excludes the annotated samples.
+                - "trainon_nonannot_valon_nonannot_teston_annot": Train on the original train set excluding the annotated samples of this set, validate on the original validation set excluding the annotated samples of this set and test on the annotated samples.
             :param simplified: Simplified (or not) version of the dataset.
         """
         self.root_directory = root_directory
@@ -158,17 +167,20 @@ class COSEDataDict(DataDict):
         self.simplified = simplified
 
         _data = {}
-        for _split in ["train", "test", "validation"]:
-            _data_split = self._read_split(_split)
-            if mode in ["original", "train_on_non_annotated"]:
+        if mode in ["original", "trainon_nonannot_valon_nonannot_teston_annot"]:
+            for _split in ["train", "test", "validation"]:
+                _data_split = self._read_split(_split)
                 _data[_split] = BaseDataset(_data_split)
-            elif mode == "annotated_rationales":   
-                _data[_split] = BaseDataset(_data_split) if _split == "test" else BaseDataset(pd.DataFrame({"sentence": [], "label": [], "sentence_id": []}))
-            elif mode == "non_annotated_rationales":
-                _data[_split] = BaseDataset(_data_split) if _split != "test" else BaseDataset(pd.DataFrame({"sentence": [], "label": [], "sentence_id": []}))
-            else:
-                raise ValueError(f"Dataset {'cose_simplified' if self.simplified else 'cose'} not supported on mode {mode}.")
+        else:
+            raise ValueError(f"Dataset {'cose_simplified' if self.simplified else 'cose'} not supported on mode {mode}.")
         super().__init__(_data)
+
+    @property
+    def num_labels(self):
+        if self.simplified:
+            return 2
+        else:
+            return 5
 
     @staticmethod
     def _label2int(y: List[str], simplified: bool) -> List[int]:
