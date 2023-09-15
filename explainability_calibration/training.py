@@ -40,7 +40,8 @@ def init_trainer_for_model_selection(
             evaluate_ece_callback,
             # evaluate_psr_callback,
         ],
-        val_check_interval=save_every_n_train_steps
+        val_check_interval=save_every_n_train_steps,
+        enable_checkpointing=False
     )
     return trainer
 

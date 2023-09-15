@@ -14,9 +14,16 @@ class SequenceClassificationModel(pl.LightningModule):
         learning_rate,
         weight_decay,
         warmup_proportion,
-        num_train_optimization_steps
+        batch_size,
+        num_epochs,
+        num_batches,
+        eval_every_n_train_steps,
+        max_gradient_norm
     ):
         super().__init__()
+        self.batch_size = batch_size
+        self.num_epochs = num_epochs
+        self.num_batches = num_batches
         self.base_model = AutoModelForSequenceClassification.from_pretrained(
             base_model,
             num_labels=num_labels,
@@ -26,7 +33,18 @@ class SequenceClassificationModel(pl.LightningModule):
         self.learning_rate = learning_rate
         self.weight_decay = weight_decay
         self.warmup_proportion = warmup_proportion
-        self.num_train_optimization_steps = num_train_optimization_steps
+        self.num_train_optimization_steps = num_batches * num_epochs
+        self.eval_every_n_train_steps = eval_every_n_train_steps
+        self.max_gradient_norm = max_gradient_norm
+        self.save_hyperparameters(
+            "eval_every_n_train_steps",
+            "batch_size",
+            "num_epochs",
+            "learning_rate",
+            "weight_decay",
+            "warmup_proportion",
+            "max_gradient_norm"
+        )
 
     def forward(self, batch):
         outputs = self.base_model(

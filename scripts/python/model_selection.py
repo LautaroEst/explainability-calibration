@@ -23,9 +23,12 @@ def parse_args():
 
     with open(args.hyperparameters_config, "r") as f:
         hyperparameters = json.load(f)
-    for name, value in hyperparameters.items():
-        setattr(args,name,value)
-
+    for name in hyperparameters.keys():
+        value = hyperparameters[name]
+        if not isinstance(value,list):
+            value = [value]
+        hyperparameters[name] = value
+    setattr(args,"hyperparameters",hyperparameters)
     return args
 
 
@@ -36,11 +39,6 @@ def main():
     
     # Random state
     rs = np.random.RandomState(args.seed)
-    print(f"Random State generator: {rs}")
-
-    # Results directory
-    results_dir = os.path.join(args.root_directory,"results/model_selection",args.base_model,args.dataset,str(args.seed))
-    print(f"Results will be saved to:\n{results_dir}")
 
     # Load the data in train_on_non_annotated mode:
     print(f"Loading {args.dataset} dataset...")
@@ -58,10 +56,11 @@ def main():
         local_files_only=True
     )
 
-    
-    # TODO: define grid
-    grid = define_grid()
-    for hyperparams in grid:
+    grid = ec.utils.create_hyperparams_grid(args.hyperparameters,n=5,random_state=rs)
+    for hyperparams_id, hyperparams in enumerate(grid):
+
+        # Results directory
+        results_dir = os.path.join(args.root_directory,"results/model_selection",args.base_model,args.dataset,f"{hyperparams_id:02d}")
 
         # Create the train and validation dataloaders:
         train_loader = ec.data.LoaderWithDynamicPadding(
@@ -79,14 +78,18 @@ def main():
             random_state=None
         )
 
-        num_train_optimization_steps = int(len(train_loader) / hyperparams["batch_size"]) * hyperparams["num_epochs"]
+        # Instantiate model:
         model = ec.modeling.SequenceClassificationModel(
-            base_model=hyperparams["base_model"],
+            base_model=args.base_model,
             num_labels=datadict.num_labels,
             learning_rate=hyperparams["learning_rate"],
             weight_decay=hyperparams["weight_decay"],
             warmup_proportion=hyperparams["warmup_proportion"],
-            num_train_optimization_steps=num_train_optimization_steps
+            batch_size=hyperparams["batch_size"],
+            num_epochs=hyperparams["num_epochs"],
+            num_batches=len(train_loader),
+            eval_every_n_train_steps=hyperparams["eval_every_n_train_steps"],
+            max_gradient_norm=hyperparams["max_gradient_norm"]
         )
 
         # Init trainer:
@@ -99,10 +102,6 @@ def main():
         )
 
     # Train, validate and save checkpoints:
-    print("***** Running training *****")
-    print("  Num examples = %d", len(datadict['train']))
-    print("  Batch size = %d", hyperparams["batch_size"])
-    print("  Num steps = %d", len(train_loader)*hyperparams["num_epochs"])
     trainer.fit(model, train_loader, validation_loader)
 
 

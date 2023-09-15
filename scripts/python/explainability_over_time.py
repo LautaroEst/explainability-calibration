@@ -1,5 +1,6 @@
 
 import argparse
+import json
 import explainability_calibration as ec
 import numpy as np
 import os
@@ -16,16 +17,13 @@ def parse_args():
     parser.add_argument("--root_directory", type=str, required=True, help="Root directory of the proyect.")
     parser.add_argument("--base_model", type=str, required=True, help="Tranformers model name")
     parser.add_argument("--dataset", type=ec.data.SupportedDatasets, required=True, choices=list(ec.data.SupportedDatasets))
-    parser.add_argument("--n_labels", type=int, default=2, help="Number of classes")
-    parser.add_argument("--eval_every_n_train_steps", type=int, default=None, help="Number of train steps every which the model should be checkpointed.")
-    parser.add_argument("--num_epochs", type=int, default=5, help="Number of epochs.")
-    parser.add_argument("--learning_rate", type=float, default=3e-2, help="Learning rate")
-    parser.add_argument("--batch_size", type=int, default=8, help="Train and evaluation batch size.")
-    parser.add_argument("--weight_decay", type=float, default=0.01, help="Weight decay for AdamW")
-    parser.add_argument("--max_gradient_norm", type=float, default=10.0, help="Max. norm for gradient norm clipping")
-    parser.add_argument("--warmup_proportion", default=0.1, type=float, help="Proportion of training to perform linear learning rate warmup for.\nE.g., 0.1 = 10%% of training.")
     parser.add_argument("--seed", type=int, default=23840, help="Random seed for reproducibility.")
+    parser.add_argument("--hyperparameters_config", type=str, help="Config file with hyperparameters values.")
     args = parser.parse_args()
+
+    with open(args.hyperparameters_config, "r") as f:
+        hyperparameters = json.load(f)
+    setattr(args,"hyperparameters",hyperparameters)
 
     return args
 
@@ -37,18 +35,13 @@ def main():
     
     # Random state
     rs = np.random.RandomState(args.seed)
-    print(f"Random State generator: {rs}")
-
-    # Results directory
-    results_dir = os.path.join(args.root_directory,"results",args.dataset,args.base_model)
-    print(f"Results will be saved to:\n{results_dir}")
 
     # Load the data in train_on_non_annotated mode:
     print(f"Loading {args.dataset} dataset...")
     datadict = ec.data.load_dataset(
         args.dataset,
         args.root_directory,
-        mode="train_on_non_annotated"
+        mode="trainon_nonannot_valon_nonannot_teston_annot"
     )
 
     # Load the pre-trained tokenizer:
@@ -71,37 +64,39 @@ def main():
     test_loader = ec.data.LoaderWithDynamicPadding(
         dataset=datadict["test"],
         tokenizer=tokenizer,
-        batch_size=args.batch_size,
+        batch_size=args.hyperparameters["batch_size"],
         shuffle=False,
         random_state=None
     )
 
     # Load the pre-trained model to perform Sequence Classification:
     print(f"Loading {args.base_model} pre-trained model...")
-    num_train_optimization_steps = int(len(train_loader) / args.batch_size) * args.num_epochs
     model = ec.modeling.SequenceClassificationModel(
         base_model=args.base_model,
-        num_labels=args.n_labels,
-        learning_rate=args.learning_rate,
-        weight_decay=args.weight_decay,
-        warmup_proportion=args.warmup_proportion,
-        num_train_optimization_steps=num_train_optimization_steps
+        num_labels=datadict.num_labels,
+        learning_rate=args.hyperparameters["learning_rate"],
+        weight_decay=args.hyperparameters["weight_decay"],
+        warmup_proportion=args.hyperparameters["warmup_proportion"],
+        batch_size=args.hyperparameters["batch_size"],
+        num_epochs=args.hyperparameters["num_epochs"],
+        num_batches=len(train_loader),
+        eval_every_n_train_steps=args.hyperparameters["eval_every_n_train_steps"],
+        max_gradient_norm=args.hyperparameters["max_gradient_norm"]
     )
 
+    # Results directory
+    results_dir = os.path.join(args.root_directory,"results/explainability_over_time",args.base_model,args.dataset)
+
     # Init trainer:
-    trainer = ec.training.init_trainer_for_model_selection(
+    trainer = ec.training.init_trainer_for_explainability(
         results_dir, 
-        args.eval_every_n_train_steps, 
-        args.num_epochs, 
-        args.max_gradient_norm,
+        args.hyperparameters["eval_every_n_train_steps"], 
+        args.hyperparameters["num_epochs"], 
+        args.hyperparameters["max_gradient_norm"],
         rs.randint(0,MAX_INT_GENERATOR)
     )
 
     # Train, validate and save checkpoints:
-    print("***** Running training *****")
-    print("  Num examples = %d", len(datadict['train']))
-    print("  Batch size = %d", args.batch_size)
-    print("  Num steps = %d", len(train_loader)*args.num_epochs)
     trainer.fit(model, train_loader, test_loader)
 
 

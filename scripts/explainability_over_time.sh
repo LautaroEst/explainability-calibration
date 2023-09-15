@@ -51,7 +51,7 @@ for dataset in "${datasets[@]}"; do
     for base_model in "${models[@]}"; do
         echo "Training on ${dataset} dataset..."
         mkdir -p results/${script_name}/${dataset}/${base_model}
-        python scripts/python/model_selection.py \
+        python scripts/python/explainability_over_time.py \
             --root_directory=. \
             --base_model=${base_model} \
             --dataset=$dataset \
