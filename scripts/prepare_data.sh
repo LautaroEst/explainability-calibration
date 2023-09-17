@@ -13,6 +13,5 @@ if [ ! -d data ]; then
     ln -s $DATA_DIR/sst2 data/sst2
     ln -s $DATA_DIR/dynasent-v1.1 data/dynasent-v1.1
     ln -s $DATA_DIR/cose data/cose
-    ln -s $DATA_DIR/cose_simplified data/cose_simplified
 fi
 conda deactivate
