@@ -1,4 +1,4 @@
 from .callbacks import (
     EvaluateECECallback, 
-    EvaluatePSRCalibrationCallback
+    EvaluateCalibrationLossCallback
 )

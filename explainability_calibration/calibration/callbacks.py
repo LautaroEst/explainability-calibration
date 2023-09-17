@@ -49,7 +49,7 @@ class EvaluateECECallback(Callback):
 
 
 
-class EvaluatePSRCalibrationCallback(Callback):
+class EvaluateCalibrationLossCallback(Callback):
     """
         Compute the calibration loss as the relative difference 
         between the calibrated posteriors and the originals. 

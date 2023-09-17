@@ -45,7 +45,8 @@ def main():
     datadict = ec.data.load_dataset(
         args.dataset,
         args.root_directory,
-        mode="trainon_nonannot_valon_nonannot_teston_annot"
+        mode="trainon_nonannot_valon_nonannot_teston_annot",
+        load_annotated_rationales=False
     )
 
     # Load the pre-trained tokenizer:

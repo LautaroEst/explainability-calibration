@@ -21,9 +21,8 @@ script_name=$(basename $0 .sh)
 
 declare -a datasets=(
     # "sst2"
-    "dynasent"
-    # "cose"
-    # "cose_simplified"
+    # "dynasent"
+    "cose"
 )
 
 declare -a models=(

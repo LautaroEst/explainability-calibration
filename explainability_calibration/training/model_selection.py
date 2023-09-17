@@ -1,7 +1,6 @@
 import lightning.pytorch as pl
 import torch
 from ..calibration import EvaluateECECallback, EvaluateCalibrationLossCallback
-from ..explainability import EvaluateExplainabilityCallback
 
 def init_trainer_for_model_selection(
         results_dir, 
