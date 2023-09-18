@@ -1,9 +1,0 @@
-{
-    "eval_every_n_train_steps": 150,
-    "batch_size": 16,
-    "num_epochs": 3,
-    "learning_rate": 0.00001,
-    "weight_decay": 0.01,
-    "warmup_proportion": 0.0,
-    "max_gradient_norm": 10.0
-}

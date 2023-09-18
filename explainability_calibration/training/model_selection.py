@@ -1,7 +1,16 @@
 import lightning.pytorch as pl
 from lightning.pytorch.loggers import TensorBoardLogger, CSVLogger
+from lightning.pytorch.utilities import rank_zero_only
 import torch
 from ..calibration import EvaluateECECallback, EvaluateCalibrationLossCallback
+
+class TBLogger(TensorBoardLogger):
+    @rank_zero_only
+    def log_metrics(self, metrics, step):
+        metrics.pop('epoch', None)
+        metrics.pop('global_step', None)
+        return super().log_metrics(metrics, step)
+
 
 def init_trainer_for_model_selection(
         results_dir,
@@ -20,7 +29,7 @@ def init_trainer_for_model_selection(
         n_folds=5,
         seed=random_state
     )
-    tb_logger = TensorBoardLogger(
+    tb_logger = TBLogger(
         save_dir=results_dir,
         name="",
         version=f"hparams_{grid_num:02d}"
@@ -41,7 +50,8 @@ def init_trainer_for_model_selection(
             # evaluate_psr_callback,
         ],
         val_check_interval=hyperparams["eval_every_n_train_steps"],
-        enable_checkpointing=False
+        enable_checkpointing=False,
+        log_every_n_steps=hyperparams["eval_every_n_train_steps"]//10
     )
     csv_logger.log_hyperparams(hyperparams)
     return trainer

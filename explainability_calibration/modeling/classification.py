@@ -1,5 +1,7 @@
 from .evaluation import accuracy
 import lightning.pytorch as pl
+from lightning.pytorch.loggers import TensorBoardLogger, CSVLogger
+import torch
 from torch.optim import AdamW
 import torch.nn.functional as F
 from transformers import AutoModelForSequenceClassification, get_linear_schedule_with_warmup
@@ -83,9 +85,10 @@ class SequenceClassificationModel(pl.LightningModule):
 
         acc = accuracy(outputs["logits"],labels)
         self.log_dict({
+            "epoch": self.current_epoch,
             "global_step": self.global_step,
-            "train_loss": loss,
-            "train_acc": acc
+            "loss/train": loss,
+            "accuracy/train": acc
         }, batch_size=len(train_batch))
         return loss
     
@@ -99,12 +102,13 @@ class SequenceClassificationModel(pl.LightningModule):
             loss = F.cross_entropy(outputs["logits"],labels)
         acc = accuracy(outputs["logits"],labels)
         self.log_dict({
+            "epoch": self.current_epoch,
             "global_step": self.global_step,
-            "val_loss": loss,
-            "val_acc": acc
+            "loss/validation": loss,
+            "accuracy/validation": acc
         }, batch_size=len(validation_batch), on_epoch=True)
         return outputs
-    
+
     def backward(self, loss):
         loss.backward()
 

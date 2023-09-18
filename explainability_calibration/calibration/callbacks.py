@@ -26,7 +26,7 @@ class EvaluateECECallback(Callback):
         logits = torch.vstack(self.logits_batches)
         labels = torch.hstack(self.labels_batches)
         ece = self._compute_ece(logits, labels)
-        pl_module.log("val_ece",ece)
+        pl_module.log("loss/ECE-validation",ece)
         self.logits_batches.clear()
         self.labels_batches.clear()
 
@@ -135,7 +135,7 @@ class EvaluateCalibrationLossCallback(Callback):
         calibrated_logits = self._calibrate_logits(logits, labels)
         calibration_loss = self._compute_calibration_loss(logits, calibrated_logits, labels)
         
-        pl_module.log(f"val_cal_loss_{self.psr}_{self.model}",calibration_loss)
+        pl_module.log(f"loss/xval_{self.psr}_{self.model}-validation",calibration_loss)
         self.logits_batches.clear()
         self.labels_batches.clear()
 
