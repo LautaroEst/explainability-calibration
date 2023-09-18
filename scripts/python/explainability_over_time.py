@@ -57,7 +57,7 @@ def main():
     train_loader = ec.data.LoaderWithDynamicPadding(
         dataset=datadict["train"],
         tokenizer=tokenizer,
-        batch_size=args.batch_size,
+        batch_size=args.hyperparameters["batch_size"],
         shuffle=True,
         random_state=rs.randint(0,MAX_INT_GENERATOR)
     )
@@ -77,22 +77,17 @@ def main():
         learning_rate=args.hyperparameters["learning_rate"],
         weight_decay=args.hyperparameters["weight_decay"],
         warmup_proportion=args.hyperparameters["warmup_proportion"],
-        batch_size=args.hyperparameters["batch_size"],
-        num_epochs=args.hyperparameters["num_epochs"],
-        num_batches=len(train_loader),
-        eval_every_n_train_steps=args.hyperparameters["eval_every_n_train_steps"],
-        max_gradient_norm=args.hyperparameters["max_gradient_norm"]
+        num_train_optimization_steps=args.hyperparameters["num_epochs"] * len(train_loader),
     )
 
     # Results directory
-    results_dir = os.path.join(args.root_directory,"results/explainability_over_time",args.base_model,args.dataset)
+    results_dir = os.path.join(args.root_directory,"results/explainability_over_time",args.dataset,args.base_model)
 
     # Init trainer:
     trainer = ec.training.init_trainer_for_explainability(
         results_dir, 
-        args.hyperparameters["eval_every_n_train_steps"], 
-        args.hyperparameters["num_epochs"], 
-        args.hyperparameters["max_gradient_norm"],
+        tokenizer,
+        args.hyperparameters,
         rs.randint(0,MAX_INT_GENERATOR)
     )
 

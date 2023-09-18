@@ -21,8 +21,8 @@ script_name=$(basename $0 .sh)
 
 declare -a datasets=(
     # "sst2"
-    "dynasent"
-    # "cose"
+    # "dynasent"
+    "cose"
 )
 
 declare -a models=(
@@ -48,7 +48,7 @@ declare -a models=(
 seed=23840
 for dataset in "${datasets[@]}"; do
     for base_model in "${models[@]}"; do
-        echo >>> "Running ${script_name} for ${base_model} on ${dataset}..."
+        echo ">>> Running ${script_name} for ${base_model} on ${dataset}..."
         mkdir -p results/${script_name}/${dataset}/${base_model}
         python scripts/python/explainability_over_time.py \
             --root_directory=. \

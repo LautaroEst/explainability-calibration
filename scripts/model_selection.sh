@@ -20,7 +20,7 @@ script_name="model_selection"
 
 
 declare -a datasets=(
-    "dynasent"
+    # "dynasent"
     "cose"
     "sst2"
 )

@@ -51,7 +51,7 @@ def init_trainer_for_model_selection(
         ],
         val_check_interval=hyperparams["eval_every_n_train_steps"],
         enable_checkpointing=False,
-        log_every_n_steps=hyperparams["eval_every_n_train_steps"]//10
+        log_every_n_steps=hyperparams["eval_every_n_train_steps"] // 5
     )
     csv_logger.log_hyperparams(hyperparams)
     return trainer
