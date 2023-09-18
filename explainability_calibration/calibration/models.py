@@ -45,17 +45,22 @@ class AffineCalibrationTrainer:
             self.model.parameters(),
             lr=self.lr,
             max_iter=self.maxiters,
-            tolerance_change=self.tolerance
+            tolerance_change=self.tolerance_change
         )
+        logits = logits.cpu()
+        labels = labels.cpu()
         def closure():
             optimizer.zero_grad()
-            loss = self.loss_fn(logits, labels)
+            cal_logits = self.model(logits)
+            loss = self.loss_fn(cal_logits, labels)
             loss.backward()
             return loss
         optimizer.step(closure)
     
     def calibrate(self,logits):
-        self.model.eval()
+        device = logits.device
+        model = self.model.to(device)
+        model.eval()
         with torch.no_grad():
-            calibrated_logits = self.model(logits)
+            calibrated_logits = model(logits)
         return calibrated_logits        

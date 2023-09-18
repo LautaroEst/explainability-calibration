@@ -77,7 +77,7 @@ class EvaluateCalibrationLossCallback(Callback):
         psr="log-loss", 
         maxiters=100, 
         lr=1e-4, 
-        tolearnce=1e-6,
+        tolerance=1e-6,
         stratified=False,
         n_folds=5,
         seed=None
@@ -117,7 +117,7 @@ class EvaluateCalibrationLossCallback(Callback):
         self.loss_fn = loss_fn
         self.maxiters = maxiters
         self.lr = lr
-        self.tolearnce = tolearnce
+        self.tolerance = tolerance
         self.stratified = stratified
         self.n_folds = n_folds
         self.seed = seed
@@ -147,17 +147,17 @@ class EvaluateCalibrationLossCallback(Callback):
 
         if self.stratified:
             if condition_ids is not None:
-                skf = StratifiedGroupKFold(n_splits=self.nfolds, shuffle=True, random_state=self.seed)
+                skf = StratifiedGroupKFold(n_splits=self.n_folds, shuffle=True, random_state=self.seed)
             else:
                 # Use StratifiedKFold in this case for backward compatibility
-                skf = StratifiedKFold(n_splits=self.nfolds, shuffle=True, random_state=self.seed)
+                skf = StratifiedKFold(n_splits=self.n_folds, shuffle=True, random_state=self.seed)
         else:
             if condition_ids is not None:
-                skf = GroupKFold(n_splits=self.nfolds)
+                skf = GroupKFold(n_splits=self.n_folds)
             else:
-                skf = KFold(n_splits=self.nfolds, shuffle=True, random_state=self.seed)
+                skf = KFold(n_splits=self.n_folds, shuffle=True, random_state=self.seed)
 
-        calibrated_logits = torch.zeros(logits.shape)
+        calibrated_logits = torch.zeros(logits.shape,device=logits.device,dtype=logits.dtype)
         for trni, tsti in skf.split(logits, labels, condition_ids):
             trainer = AffineCalibrationTrainer(
                 num_classes=num_classes,

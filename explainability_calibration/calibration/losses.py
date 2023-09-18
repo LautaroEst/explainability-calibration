@@ -6,6 +6,7 @@ from torch import nn
 class LogLoss(nn.Module):
 
     def __init__(self, norm=True):
+        super().__init__()
         self.norm = norm
 
     def forward(self, logits, labels):
@@ -21,6 +22,7 @@ class LogLoss(nn.Module):
 class Brier(nn.Module):
     
     def __init__(self, norm=True):
+        super().__init__()
         self.norm = norm
 
     def forward(self, logits, labels):

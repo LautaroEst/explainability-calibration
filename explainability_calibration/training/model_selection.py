@@ -24,7 +24,7 @@ def init_trainer_for_model_selection(
         psr="log-loss",
         maxiters=100,
         lr=1e-4,
-        tolearnce=1e-6,
+        tolerance=1e-6,
         stratified=False,
         n_folds=5,
         seed=random_state
@@ -47,7 +47,7 @@ def init_trainer_for_model_selection(
         logger=[tb_logger, csv_logger],
         callbacks=[
             evaluate_ece_callback,
-            # evaluate_psr_callback,
+            evaluate_psr_callback,
         ],
         val_check_interval=hyperparams["eval_every_n_train_steps"],
         enable_checkpointing=False,
