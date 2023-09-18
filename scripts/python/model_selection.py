@@ -45,8 +45,7 @@ def main():
     datadict = ec.data.load_dataset(
         args.dataset,
         args.root_directory,
-        mode="trainon_nonannot_valon_nonannot_teston_annot",
-        load_annotated_rationales=False
+        mode="trainon_nonannot_valon_nonannot_teston_annot"
     )
 
     # Load the pre-trained tokenizer:
@@ -61,7 +60,7 @@ def main():
     for hyperparams_id, hyperparams in enumerate(grid):
 
         # Results directory
-        results_dir = os.path.join(args.root_directory,"results/model_selection",args.base_model,args.dataset,f"{hyperparams_id:02d}")
+        results_dir = os.path.join(args.root_directory,"results/model_selection",args.dataset,args.base_model)
 
         # Create the train and validation dataloaders:
         train_loader = ec.data.LoaderWithDynamicPadding(
@@ -86,24 +85,19 @@ def main():
             learning_rate=hyperparams["learning_rate"],
             weight_decay=hyperparams["weight_decay"],
             warmup_proportion=hyperparams["warmup_proportion"],
-            batch_size=hyperparams["batch_size"],
-            num_epochs=hyperparams["num_epochs"],
-            num_batches=len(train_loader),
-            eval_every_n_train_steps=hyperparams["eval_every_n_train_steps"],
-            max_gradient_norm=hyperparams["max_gradient_norm"]
+            num_train_optimization_steps=hyperparams["num_epochs"] * len(train_loader)
         )
 
         # Init trainer:
         trainer = ec.training.init_trainer_for_model_selection(
-            results_dir, 
-            hyperparams["eval_every_n_train_steps"], 
-            hyperparams["num_epochs"], 
-            hyperparams["max_gradient_norm"],
+            results_dir,
+            hyperparams_id,
+            hyperparams,
             rs.randint(0,MAX_INT_GENERATOR)
         )
 
-    # Train, validate and save checkpoints:
-    trainer.fit(model, train_loader, validation_loader)
+        # Train, validate and save checkpoints:
+        trainer.fit(model, train_loader, validation_loader)
 
 
 if __name__ == "__main__":

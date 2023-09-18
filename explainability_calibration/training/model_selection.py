@@ -1,12 +1,12 @@
 import lightning.pytorch as pl
+from lightning.pytorch.loggers import TensorBoardLogger, CSVLogger
 import torch
 from ..calibration import EvaluateECECallback, EvaluateCalibrationLossCallback
 
 def init_trainer_for_model_selection(
-        results_dir, 
-        save_every_n_train_steps, 
-        num_epochs, 
-        max_gradient_norm,
+        results_dir,
+        grid_num,
+        hyperparams,
         random_state=None
     ):
     evaluate_ece_callback = EvaluateECECallback(n_bins=10)
@@ -20,17 +20,28 @@ def init_trainer_for_model_selection(
         n_folds=5,
         seed=random_state
     )
+    tb_logger = TensorBoardLogger(
+        save_dir=results_dir,
+        name="",
+        version=f"hparams_{grid_num:02d}"
+    )
+    csv_logger = CSVLogger(
+        save_dir=results_dir,
+        name="",
+        version=f"hparams_{grid_num:02d}"
+    )
     trainer = pl.Trainer(
         accelerator="gpu" if torch.cuda.is_available() else "cpu",
         devices=-1,
-        max_epochs=num_epochs,
-        gradient_clip_val=max_gradient_norm,
-        default_root_dir=results_dir,
+        max_epochs=hyperparams["num_epochs"],
+        gradient_clip_val=hyperparams["max_gradient_norm"],
+        logger=[tb_logger, csv_logger],
         callbacks=[
             evaluate_ece_callback,
             # evaluate_psr_callback,
         ],
-        val_check_interval=save_every_n_train_steps,
+        val_check_interval=hyperparams["eval_every_n_train_steps"],
         enable_checkpointing=False
     )
+    csv_logger.log_hyperparams(hyperparams)
     return trainer

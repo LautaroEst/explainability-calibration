@@ -43,7 +43,6 @@ def main():
         args.root_directory,
         mode="trainon_nonannot_valon_nonannot_teston_annot"
     )
-    import pdb; pdb.set_trace()
 
     # Load the pre-trained tokenizer:
     print(f"Loading tokenizer...")

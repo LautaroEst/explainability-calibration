@@ -14,16 +14,9 @@ class SequenceClassificationModel(pl.LightningModule):
         learning_rate,
         weight_decay,
         warmup_proportion,
-        batch_size,
-        num_epochs,
-        num_batches,
-        eval_every_n_train_steps,
-        max_gradient_norm
+        num_train_optimization_steps
     ):
         super().__init__()
-        self.batch_size = batch_size
-        self.num_epochs = num_epochs
-        self.num_batches = num_batches
         self.base_model = AutoModelForSequenceClassification.from_pretrained(
             base_model,
             num_labels=num_labels,
@@ -33,18 +26,7 @@ class SequenceClassificationModel(pl.LightningModule):
         self.learning_rate = learning_rate
         self.weight_decay = weight_decay
         self.warmup_proportion = warmup_proportion
-        self.num_train_optimization_steps = num_batches * num_epochs
-        self.eval_every_n_train_steps = eval_every_n_train_steps
-        self.max_gradient_norm = max_gradient_norm
-        self.save_hyperparameters(
-            "eval_every_n_train_steps",
-            "batch_size",
-            "num_epochs",
-            "learning_rate",
-            "weight_decay",
-            "warmup_proportion",
-            "max_gradient_norm"
-        )
+        self.num_train_optimization_steps = num_train_optimization_steps
 
     def forward(self, batch):
         outputs = self.base_model(
@@ -117,6 +99,7 @@ class SequenceClassificationModel(pl.LightningModule):
             loss = F.cross_entropy(outputs["logits"],labels)
         acc = accuracy(outputs["logits"],labels)
         self.log_dict({
+            "global_step": self.global_step,
             "val_loss": loss,
             "val_acc": acc
         }, batch_size=len(validation_batch), on_epoch=True)
