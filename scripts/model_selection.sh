@@ -2,8 +2,8 @@
 #
 #$ -S /bin/bash
 #$ -N model_selection
-#$ -o /homes/eva/q/qestienne/projects/interpretability/logs/model_selection_out.log
-#$ -e /homes/eva/q/qestienne/projects/interpretability/logs/model_selection_err.log
+#$ -o /homes/eva/q/qestienne/projects/explainability/logs/model_selection_out.log
+#$ -e /homes/eva/q/qestienne/projects/explainability/logs/model_selection_err.log
 #$ -q all.q
 #$ -l matylda3=0.5,gpu=1,gpu_ram=16G,ram_free=64G,mem_free=10G
 #
@@ -15,14 +15,14 @@ source ~/.bashrc
 conda activate $env_name
 cd $PROJECTS_DIR/$project_name
 export CUDA_VISIBLE_DEVICES=$(free-gpus.sh 1)
-script_name=$(basename $0 .sh)
+script_name="model_selection"
 
 
 
 declare -a datasets=(
-    # "sst2"
     "dynasent"
-    # "cose"
+    "cose"
+    "sst2"
 )
 
 declare -a models=(
@@ -34,7 +34,7 @@ declare -a models=(
     # "distilbert-base-uncased"
     "distilroberta-base"
     # "bert-base-uncased"
-    # "roberta-base"
+    "roberta-base"
     # "facebook/muppet-roberta-base"
     # "microsoft/deberta-v3-base"
     # "albert-xxlarge-v2"
@@ -48,14 +48,14 @@ declare -a models=(
 seed=23840
 for dataset in "${datasets[@]}"; do
     for base_model in "${models[@]}"; do
-        echo ">>> Running ${script_name} for ${base_model} on ${dataset}..."
+        echo ">>> Running ${script_name} for ${base_model} on ${dataset}... <<<"
         mkdir -p results/${script_name}/${dataset}/${base_model}
         python scripts/python/model_selection.py \
             --root_directory=. \
             --base_model=${base_model} \
             --dataset=$dataset \
             --seed=$seed \
-            --hyperparameters_config=./configs/${script_name}/${base_model}_${dataset}.json
+            --hyperparameters_config=./configs/${script_name}/${base_model}_${dataset}.jsonl
     done
 done
 

@@ -22,13 +22,8 @@ def parse_args():
     args = parser.parse_args()
 
     with open(args.hyperparameters_config, "r") as f:
-        hyperparameters = json.load(f)
-    for name in hyperparameters.keys():
-        value = hyperparameters[name]
-        if not isinstance(value,list):
-            value = [value]
-        hyperparameters[name] = value
-    setattr(args,"hyperparameters",hyperparameters)
+        hyperparameters_dicts = [json.loads(hyperparameters) for hyperparameters in f.read().splitlines()]
+    setattr(args,"hyperparameters_dicts",hyperparameters_dicts)
     return args
 
 
@@ -56,8 +51,7 @@ def main():
         local_files_only=True
     )
 
-    grid = ec.utils.create_hyperparams_grid(args.hyperparameters,n=5,random_state=rs)
-    for hyperparams_id, hyperparams in enumerate(grid):
+    for hyperparams_id, hyperparams in enumerate(args.hyperparameters_dicts):
 
         # Results directory
         results_dir = os.path.join(args.root_directory,"results/model_selection",args.dataset,args.base_model)
