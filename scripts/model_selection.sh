@@ -20,7 +20,7 @@ script_name="model_selection"
 
 
 declare -a datasets=(
-    # "dynasent"
+    "dynasent"
     "cose"
     "sst2"
 )
@@ -34,7 +34,7 @@ declare -a models=(
     # "distilbert-base-uncased"
     "distilroberta-base"
     # "bert-base-uncased"
-    "roberta-base"
+    # "roberta-base"
     # "facebook/muppet-roberta-base"
     # "microsoft/deberta-v3-base"
     # "albert-xxlarge-v2"
@@ -48,7 +48,7 @@ declare -a models=(
 seed=23840
 for dataset in "${datasets[@]}"; do
     for base_model in "${models[@]}"; do
-        echo ">>> Running ${script_name} for ${base_model} on ${dataset}... <<<"
+        echo ">>> Running ${script_name} for ${base_model} on ${dataset}..."
         mkdir -p results/${script_name}/${dataset}/${base_model}
         python scripts/python/model_selection.py \
             --root_directory=. \

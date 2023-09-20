@@ -1,13 +1,13 @@
 
 import argparse
 import json
+import random
+
+import torch
 import explainability_calibration as ec
 import numpy as np
 import os
 from transformers import AutoTokenizer
-
-
-MAX_INT_GENERATOR = 1000
 
 
 def parse_args():
@@ -33,7 +33,10 @@ def main():
     args = parse_args()
     
     # Random state
-    rs = np.random.RandomState(args.seed)
+    random.seed(args.seed)     
+    np.random.seed(args.seed)  
+    torch.manual_seed(args.seed)
+    torch.cuda.manual_seed_all(args.seed)
 
     # Load the data in train_on_non_annotated mode:
     print(f"Loading {args.dataset} dataset...")
@@ -62,7 +65,7 @@ def main():
             tokenizer=tokenizer,
             batch_size=hyperparams["batch_size"],
             shuffle=True,
-            random_state=rs.randint(0,MAX_INT_GENERATOR)
+            random_state=args.seed
         )
         validation_loader = ec.data.LoaderWithDynamicPadding(
             dataset=datadict["validation"],
@@ -87,7 +90,7 @@ def main():
             results_dir,
             hyperparams_id,
             hyperparams,
-            rs.randint(0,MAX_INT_GENERATOR)
+            args.seed
         )
 
         # Train, validate and save checkpoints:

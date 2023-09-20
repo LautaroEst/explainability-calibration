@@ -80,7 +80,7 @@ class EvaluateCalibrationLossCallback(Callback):
         tolerance=1e-6,
         stratified=False,
         n_folds=5,
-        seed=None
+        random_state=None
     ):
         super().__init__()
 
@@ -120,7 +120,7 @@ class EvaluateCalibrationLossCallback(Callback):
         self.tolerance = tolerance
         self.stratified = stratified
         self.n_folds = n_folds
-        self.seed = seed
+        self.seed = random_state
         self.logits_batches = []
         self.labels_batches = []
         

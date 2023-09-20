@@ -1,9 +1,9 @@
 #!/bin/bash
 #
 #$ -S /bin/bash
-#$ -N model_selection
-#$ -o /homes/eva/q/qestienne/projects/interpretability/logs/model_selection_out.log
-#$ -e /homes/eva/q/qestienne/projects/interpretability/logs/model_selection_err.log
+#$ -N explainability_over_time_out
+#$ -o /homes/eva/q/qestienne/projects/explainability/logs/explainability_over_time_out.log
+#$ -e /homes/eva/q/qestienne/projects/explainability/logs/explainability_over_time_err.log
 #$ -q all.q
 #$ -l matylda3=0.5,gpu=1,gpu_ram=16G,ram_free=64G,mem_free=10G
 #
@@ -20,8 +20,8 @@ script_name=$(basename $0 .sh)
 
 
 declare -a datasets=(
-    # "sst2"
-    # "dynasent"
+    "sst2"
+    "dynasent"
     "cose"
 )
 
