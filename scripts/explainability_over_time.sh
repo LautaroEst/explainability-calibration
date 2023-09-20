@@ -20,9 +20,9 @@ script_name="explainability_over_time"
 
 
 declare -a datasets=(
-    "sst2"
     "dynasent"
     "cose"
+    "sst2"
 )
 
 declare -a models=(

@@ -95,7 +95,9 @@ def main():
     )
 
     # Train, validate and save checkpoints:
-    trainer.fit(model, train_loader, test_loader)
+    possible_ckpt_path = os.path.join(results_dir,f"{args.seed}/last.ckpt")
+    ckpt_path = possible_ckpt_path if os.path.exists(possible_ckpt_path) else None
+    trainer.fit(model, train_loader, test_loader, ckpt_path=ckpt_path)
 
 
 if __name__ == "__main__":

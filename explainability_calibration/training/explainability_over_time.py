@@ -1,7 +1,9 @@
+import os
 import lightning.pytorch as pl
 import torch
 from ..calibration import EvaluateECECallback, EvaluateCalibrationLossCallback
 from ..explainability import ARTokenF1ExplainabilityCallback
+from lightning.pytorch.callbacks import ModelCheckpoint
 from lightning.pytorch.loggers import CSVLogger
 from .utils import TBLogger
 
@@ -28,17 +30,23 @@ def init_trainer_for_explainability(
     tb_logger = TBLogger(
         save_dir=results_dir,
         name="",
-        version=""
+        version=f"{random_state}"
     )
     csv_logger = CSVLogger(
         save_dir=results_dir,
         name="",
-        version=""
+        version=f"{random_state}"
     )
     ar_token_f1_callback = ARTokenF1ExplainabilityCallback(
         tokenizer, 
         add_residuals=True, 
         idx_layer=2
+    )
+    checkpoint_callback = ModelCheckpoint(
+        dirpath=os.path.join(results_dir,f"{random_state}"),
+        save_last=True,
+        filename="last.ckpt",
+        every_n_epochs=hyperparams["eval_every_n_train_steps"]
     )
     trainer = pl.Trainer(
         accelerator="gpu" if torch.cuda.is_available() else "cpu",
@@ -50,9 +58,10 @@ def init_trainer_for_explainability(
             ar_token_f1_callback,
             evaluate_ece_callback,
             evaluate_psr_callback,
+            checkpoint_callback
         ],
         val_check_interval=hyperparams["eval_every_n_train_steps"],
-        enable_checkpointing=False,
+        enable_checkpointing=True,
         log_every_n_steps=hyperparams["eval_every_n_train_steps"] // 5
     )
     csv_logger.log_hyperparams(hyperparams)
