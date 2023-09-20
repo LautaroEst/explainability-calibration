@@ -34,7 +34,7 @@ declare -a models=(
     # "distilbert-base-uncased"
     "distilroberta-base"
     # "bert-base-uncased"
-    # "roberta-base"
+    "roberta-base"
     # "facebook/muppet-roberta-base"
     # "microsoft/deberta-v3-base"
     # "albert-xxlarge-v2"

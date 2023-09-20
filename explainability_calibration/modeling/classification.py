@@ -74,37 +74,49 @@ class SequenceClassificationModel(pl.LightningModule):
             "lr_scheduler": lr_scheduler
         }
 
+
     def training_step(self, train_batch, batch_idx):
         outputs = self(train_batch)
         if self.num_labels == 1:
             labels = train_batch["label"].unsqueeze(dim=-1).type(outputs["logits"].dtype)
             loss = F.binary_cross_entropy_with_logits(outputs["logits"],labels)
+            priors = torch.bincount(labels,minlength=2)
         else:
             labels = train_batch["label"]
             loss = F.cross_entropy(outputs["logits"],labels)
+            priors = torch.bincount(labels,minlength=self.num_labels)
+
+        priors_loss = - priors.dot(torch.log(priors))
+        normloss = loss / priors_loss
 
         acc = accuracy(outputs["logits"],labels)
         self.log_dict({
             "epoch": self.current_epoch,
             "global_step": self.global_step,
-            "loss/train": loss,
+            "normloss/train": normloss,
             "accuracy/train": acc
         }, batch_size=len(train_batch))
         return loss
-    
+
     def validation_step(self, validation_batch, batch_idx):
         outputs = self(validation_batch)
         if self.num_labels == 1:
             labels = validation_batch["label"].unsqueeze(dim=-1).type(outputs["logits"].dtype)
             loss = F.binary_cross_entropy_with_logits(outputs["logits"],labels)
+            priors = torch.bincount(labels,minlength=2)
         else:
             labels = validation_batch["label"]
             loss = F.cross_entropy(outputs["logits"],labels)
+            priors = torch.bincount(labels,minlength=self.num_labels)
+
+        priors_loss = - priors.dot(torch.log(priors))
+        normloss = loss / priors_loss
+
         acc = accuracy(outputs["logits"],labels)
         self.log_dict({
             "epoch": self.current_epoch,
             "global_step": self.global_step,
-            "loss/validation": loss,
+            "normloss/validation": normloss,
             "accuracy/validation": acc
         }, batch_size=len(validation_batch), on_epoch=True)
         return outputs

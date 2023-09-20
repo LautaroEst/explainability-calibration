@@ -3,3 +3,4 @@ results.old/
 *.egg-info/
 *.pyc
 *__pycache__/
+logs/

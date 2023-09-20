@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 #$ -S /bin/bash
-#$ -N explainability_over_time_out
+#$ -N explainability_over_time
 #$ -o /homes/eva/q/qestienne/projects/explainability/logs/explainability_over_time_out.log
 #$ -e /homes/eva/q/qestienne/projects/explainability/logs/explainability_over_time_err.log
 #$ -q all.q
@@ -15,7 +15,7 @@ source ~/.bashrc
 conda activate $env_name
 cd $PROJECTS_DIR/$project_name
 export CUDA_VISIBLE_DEVICES=$(free-gpus.sh 1)
-script_name=$(basename $0 .sh)
+script_name="explainability_over_time"
 
 
 
@@ -34,7 +34,7 @@ declare -a models=(
     # "distilbert-base-uncased"
     "distilroberta-base"
     # "bert-base-uncased"
-    # "roberta-base"
+    "roberta-base"
     # "facebook/muppet-roberta-base"
     # "microsoft/deberta-v3-base"
     # "albert-xxlarge-v2"

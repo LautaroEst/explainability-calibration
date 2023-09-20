@@ -90,7 +90,7 @@ class SST2DataDict(DataDict):
                     _data_split[group] = None
                 dfs[_split] = BaseDataset(_data_split)
             test_dfs = []
-            for _split in ["train", "validation", "test"]:
+            for _split in ["train", "validation"]:
                 annotations_path = os.path.join(root_directory, f"data/fair-data/data/SST/sst2_{_split}set_indexes.csv")
                 idxs_from_annotations = pd.read_csv(annotations_path)["sst2_idxs"]
                 _data_split = _data[_split].to_pandas()
@@ -99,7 +99,7 @@ class SST2DataDict(DataDict):
                 test_dfs.append(_data_split)
             test_dfs = pd.concat(test_dfs,axis=0).reset_index(drop=True)
             test_dfs.rename(columns={"idx": "sentence_id"},inplace=True)
-            dfs[_split] = BaseDataset(test_dfs)
+            dfs["test"] = BaseDataset(test_dfs)
         else:
             raise ValueError(f"Dataset sst2 not supported on mode {mode}.")
         super().__init__(dfs)
