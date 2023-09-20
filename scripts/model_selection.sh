@@ -5,7 +5,7 @@
 #$ -o /homes/eva/q/qestienne/projects/explainability/logs/model_selection_out.log
 #$ -e /homes/eva/q/qestienne/projects/explainability/logs/model_selection_err.log
 #$ -q all.q
-#$ -l matylda3=0.5,gpu=1,gpu_ram=16G,ram_free=64G,mem_free=10G
+#$ -l matylda3=0.5,gpu=1,gpu_ram=16G,ram_free=64G,mem_free=30G
 #
 
 # Configure environment
