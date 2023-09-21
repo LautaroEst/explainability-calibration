@@ -50,7 +50,7 @@ def main():
     # Load the pre-trained tokenizer:
     print(f"Loading tokenizer...")
     tokenizer = AutoTokenizer.from_pretrained(
-        args.base_model, 
+        args.base_model.replace("--","/"),
         do_lower_case="uncased" in args.base_model, 
         local_files_only=True
     )

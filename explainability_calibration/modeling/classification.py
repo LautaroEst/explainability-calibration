@@ -20,7 +20,7 @@ class SequenceClassificationModel(pl.LightningModule):
     ):
         super().__init__()
         self.base_model = AutoModelForSequenceClassification.from_pretrained(
-            base_model,
+            base_model.replace("--","/"),
             num_labels=num_labels,
             local_files_only=True
         )
@@ -31,12 +31,19 @@ class SequenceClassificationModel(pl.LightningModule):
         self.num_train_optimization_steps = num_train_optimization_steps
 
     def forward(self, batch):
-        outputs = self.base_model(
-            input_ids=batch["input_ids"],
-            attention_mask=batch["attention_mask"],
-            token_type_ids=batch["token_type_ids"],
-            output_attentions=True
-        )
+        if self.base_model.name_or_path in ["distilbert-base-uncased"]:
+            outputs = self.base_model(
+                input_ids=batch["input_ids"],
+                attention_mask=batch["attention_mask"],
+                output_attentions=True
+            )
+        else:
+            outputs = self.base_model(
+                input_ids=batch["input_ids"],
+                attention_mask=batch["attention_mask"],
+                token_type_ids=batch["token_type_ids"],
+                output_attentions=True
+            )
         return {
             "logits": outputs.logits,
             "hidden_states": outputs.hidden_states,

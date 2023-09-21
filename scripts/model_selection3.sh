@@ -1,9 +1,9 @@
 #!/bin/bash
 #
 #$ -S /bin/bash
-#$ -N model_selection
-#$ -o /homes/eva/q/qestienne/projects/explainability/logs/model_selection_out.log
-#$ -e /homes/eva/q/qestienne/projects/explainability/logs/model_selection_err.log
+#$ -N model_selection3
+#$ -o /homes/eva/q/qestienne/projects/explainability/logs/model_selection3_out.log
+#$ -e /homes/eva/q/qestienne/projects/explainability/logs/model_selection3_err.log
 #$ -q long.q
 #$ -l matylda3=0.5,gpu=1,gpu_ram=16G,ram_free=64G,mem_free=30G
 #
@@ -28,13 +28,13 @@ declare -a datasets=(
 declare -a models=(
     # "albert-base-v2"
     # "albert-large-v2"
-    # "nreimers--MiniLM-L6-H384-uncased"
-    # "microsoft--MiniLM-L12-H384-uncased"
+    "nreimers--MiniLM-L6-H384-uncased"
+    "microsoft--MiniLM-L12-H384-uncased"
     # "albert-xlarge-v2"
     # "distilbert-base-uncased"
-    "distilroberta-base"
+    # "distilroberta-base"
     # "bert-base-uncased"
-    "roberta-base"
+    # "roberta-base"
     # "facebook--muppet-roberta-base"
     # "microsoft--deberta-v3-base"
     # "albert-xxlarge-v2"
