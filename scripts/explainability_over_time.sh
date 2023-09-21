@@ -4,7 +4,7 @@
 #$ -N explainability_over_time
 #$ -o /homes/eva/q/qestienne/projects/explainability/logs/explainability_over_time_out.log
 #$ -e /homes/eva/q/qestienne/projects/explainability/logs/explainability_over_time_err.log
-#$ -q all.q
+#$ -q long.q
 #$ -l matylda3=0.5,gpu=1,gpu_ram=16G,ram_free=64G,mem_free=30G
 #
 

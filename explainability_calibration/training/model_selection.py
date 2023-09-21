@@ -25,9 +25,10 @@ def init_trainer_for_model_selection(
     )
     checkpoint_callback = ModelCheckpoint(
         dirpath=os.path.join(results_dir,f"hparams_{hyperparams_id}/{random_state}"),
-        save_last=True,
-        filename="last.ckpt",
-        every_n_epochs=hyperparams["eval_every_n_train_steps"]
+        filename="checkpoint-{global_step}",
+        monitor="step",
+        mode="max",
+        every_n_train_steps=hyperparams["eval_every_n_train_steps"],
     )
 
     tb_logger = TBLogger(
@@ -37,8 +38,7 @@ def init_trainer_for_model_selection(
     )
     csv_logger = CSVLogger(
         save_dir=results_dir,
-        name="",
-        version=f"hparams_{hyperparams_id}/{random_state}"
+        name=f"hparams_{hyperparams_id}/{random_state}"
     )
     trainer = pl.Trainer(
         accelerator="gpu" if torch.cuda.is_available() else "cpu",

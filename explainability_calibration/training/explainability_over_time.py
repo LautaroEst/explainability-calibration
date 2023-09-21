@@ -34,8 +34,7 @@ def init_trainer_for_explainability(
     )
     csv_logger = CSVLogger(
         save_dir=results_dir,
-        name="",
-        version=f"{random_state}"
+        name=f"{random_state}"
     )
     ar_token_f1_callback = ARTokenF1ExplainabilityCallback(
         tokenizer, 
@@ -44,9 +43,10 @@ def init_trainer_for_explainability(
     )
     checkpoint_callback = ModelCheckpoint(
         dirpath=os.path.join(results_dir,f"{random_state}"),
-        save_last=True,
-        filename="last.ckpt",
-        every_n_epochs=hyperparams["eval_every_n_train_steps"]
+        filename="checkpoint-{global_step}",
+        monitor="step",
+        mode="max",
+        every_n_train_steps=hyperparams["eval_every_n_train_steps"],
     )
     trainer = pl.Trainer(
         accelerator="gpu" if torch.cuda.is_available() else "cpu",

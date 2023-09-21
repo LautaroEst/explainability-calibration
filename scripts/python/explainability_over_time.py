@@ -1,5 +1,6 @@
 
 import argparse
+import glob
 import json
 import random
 
@@ -95,8 +96,8 @@ def main():
     )
 
     # Train, validate and save checkpoints:
-    possible_ckpt_path = os.path.join(results_dir,f"{args.seed}/last.ckpt")
-    ckpt_path = possible_ckpt_path if os.path.exists(possible_ckpt_path) else None
+    possible_ckpts = glob.glob(os.path.join(results_dir,f"{args.seed}/*.ckpt"))
+    ckpt_path = possible_ckpts[0] if len(possible_ckpts) > 0 else None
     trainer.fit(model, train_loader, test_loader, ckpt_path=ckpt_path)
 
 
