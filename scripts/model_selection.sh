@@ -21,19 +21,19 @@ script_name="model_selection"
 
 declare -a datasets=(
     "dynasent"
-    "cose"
-    "sst2"
+    # "cose"
+    # "sst2"
 )
 
 declare -a models=(
     # "albert-base-v2"
     # "albert-large-v2"
-    # "nreimers--MiniLM-L6-H384-uncased"
-    # "microsoft--MiniLM-L12-H384-uncased"
+    "nreimers--MiniLM-L6-H384-uncased"
+    "microsoft--MiniLM-L12-H384-uncased"
     # "albert-xlarge-v2"
-    # "distilbert-base-uncased"
+    "distilbert-base-uncased"
     "distilroberta-base"
-    # "bert-base-uncased"
+    "bert-base-uncased"
     "roberta-base"
     # "facebook--muppet-roberta-base"
     # "microsoft--deberta-v3-base"
