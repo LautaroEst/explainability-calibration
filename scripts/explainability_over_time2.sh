@@ -1,9 +1,9 @@
 #!/bin/bash
 #
 #$ -S /bin/bash
-#$ -N explainability_over_time
-#$ -o /homes/eva/q/qestienne/projects/explainability/logs/explainability_over_time_out.log
-#$ -e /homes/eva/q/qestienne/projects/explainability/logs/explainability_over_time_err.log
+#$ -N explainability_over_time2
+#$ -o /homes/eva/q/qestienne/projects/explainability/logs/explainability_over_time2_out.log
+#$ -e /homes/eva/q/qestienne/projects/explainability/logs/explainability_over_time2_err.log
 #$ -q long.q
 #$ -l matylda3=0.5,gpu=1,gpu_ram=16G,ram_free=64G,mem_free=30G
 #
@@ -20,9 +20,9 @@ script_name="explainability_over_time"
 
 
 declare -a datasets=(
-    "dynasent"
+    # "dynasent"
     # "cose"
-    # "sst2"
+    "sst2"
 )
 
 declare -a models=(
@@ -33,8 +33,8 @@ declare -a models=(
     # "albert-xlarge-v2"
     "distilbert-base-uncased"
     "distilroberta-base"
-    # "bert-base-uncased"
-    # "roberta-base"
+    "bert-base-uncased"
+    "roberta-base"
     # "facebook--muppet-roberta-base"
     # "microsoft--deberta-v3-base"
     # "albert-xxlarge-v2"
